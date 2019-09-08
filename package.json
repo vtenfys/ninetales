@@ -5,6 +5,7 @@
   ],
   "scripts": {
     "build": "yarn workspaces run build",
+    "clean": "yarn workspaces run clean",
     "lint": "eslint . --ignore-path .gitignore"
   },
   "devDependencies": {
