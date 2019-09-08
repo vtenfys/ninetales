@@ -4,7 +4,8 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspaces run build"
+    "build": "yarn workspaces run build",
+    "lint": "eslint . --ignore-path .gitignore"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.0",
