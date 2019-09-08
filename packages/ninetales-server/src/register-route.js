@@ -1,6 +1,8 @@
+import config from "./config.json";
+
 import pretty from "pretty";
 import { minify } from "html-minifier";
-import config from "./config.json";
+import serialize from "serialize-javascript";
 
 import { h } from "preact";
 import render from "preact-render-to-string";
@@ -17,6 +19,7 @@ function renderResponse(res, Page, locals) {
   if (type === "full") {
     locals.app = render(<Page {...data} />);
     locals.styles = flushToHTML();
+    locals.serializedData = serialize(data, { isJSON: true });
   }
 
   res.render("page", locals, (err, html) => {

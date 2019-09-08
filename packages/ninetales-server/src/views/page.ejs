@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- type === "full" ? styles : "" %>
+  </head>
+  <body>
+    <div id="app"><%- type === "full" ? app : "" %></div>
+    <% if (type === "full") { %>
+    <script id="data" type="application/json">
+      <%- serializedData %>
+    </script>
+    <script src="/index.js"></script>
+    <% } %>
+  </body>
+</html>
