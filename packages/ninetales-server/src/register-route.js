@@ -11,7 +11,7 @@ moduleAlias.addAliases(config.alias);
 // use require() to work around ilearnio/module-alias/issues/59
 const { flushToHTML } = require("styled-jsx/server");
 
-function renderResponse(res, { locals, Page }) {
+function renderResponse(res, Page, locals) {
   const { type, data } = locals;
 
   if (type === "full") {
@@ -46,12 +46,10 @@ function registerRoute(app, route, view) {
 
     const { default: Page, getData } = require(component);
 
-    const locals = {
+    renderResponse(res, Page, {
       type: res.locals.type || "full",
       data: await getData()
-    };
-
-    renderResponse(res, { locals, Page });
+    });
   });
 }
 
