@@ -4,6 +4,6 @@ module.exports = function(api) {
   return {
     presets: [["@babel/preset-env", { useBuiltIns: "usage", corejs: 3 }]],
     plugins: ["root-import"],
-    babelrcRoots: [".", "packages/*"]
+    babelrcRoots: [".", "packages/*"],
   };
 };

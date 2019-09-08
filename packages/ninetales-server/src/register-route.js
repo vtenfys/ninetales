@@ -48,7 +48,7 @@ function registerRoute(app, route, view) {
 
     renderResponse(res, Page, {
       type: res.locals.type || "full",
-      data: await getData()
+      data: await getData(),
     });
   });
 }
