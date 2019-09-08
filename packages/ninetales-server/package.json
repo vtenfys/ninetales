@@ -5,10 +5,12 @@
   "author": "David Bailey <davidbailey00@outlook.com>",
   "license": "UNLICENSED",
   "scripts": {
-    "build": "babel --root-mode upward src --out-dir dist"
+    "build": "babel --root-mode upward src --out-dir dist --copy-files",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "compression": "^1.7.4",
+    "core-js": "3",
     "ejs": "^2.7.1",
     "express": "^4.17.1",
     "html-minifier": "^4.0.0",

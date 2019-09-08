@@ -1,7 +1,7 @@
 import express from "express";
 import compression from "compression";
 import registerRoute from "./register-route";
-import config from "./server.config.json";
+import config from "./config.json";
 
 const app = express();
 

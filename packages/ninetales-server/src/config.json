@@ -1,0 +1,14 @@
+{
+  "compressionLevel": 9,
+  "port": 3000,
+  "alias": {
+    "react": "preact/compat"
+  },
+  "minify": {
+    "collapseBooleanAttributes": true,
+    "collapseInlineTagWhitespace": true,
+    "collapseWhitespace": true,
+    "minifyCSS": true,
+    "minifyJS": true
+  }
+}

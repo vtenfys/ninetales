@@ -1,12 +1,12 @@
 import pretty from "pretty";
 import { minify } from "html-minifier";
-import config from "./server.config.json";
+import config from "./config.json";
 
 import { h } from "preact";
 import render from "preact-render-to-string";
 
 import moduleAlias from "module-alias";
-moduleAlias.addAliases(require("~/package.json").alias);
+moduleAlias.addAliases(config.alias);
 
 // use require() to work around ilearnio/module-alias/issues/59
 const { flushToHTML } = require("styled-jsx/server");
