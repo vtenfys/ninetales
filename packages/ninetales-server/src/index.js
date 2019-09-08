@@ -1,9 +1,9 @@
 import express from "express";
 import compression from "compression";
+import registerRoute from "./register-route";
 import config from "./server.config.json";
 
 const app = express();
-const registerRoute = require("./register-route").default(app);
 
 app.use(compression({ level: config.compressionLevel }));
 app.use(express.static(`${process.cwd()}/dist/client`));
@@ -18,8 +18,8 @@ app.get("/.data/*", (req, res, next) => {
 });
 
 // register user-defined routes
-// require(`${process.cwd()}/dist/routes`)(registerRoute);
-registerRoute("/*", "Page");
+// require(`${process.cwd()}/dist/routes`)(registerRoute(app));
+registerRoute(app)("/*", "Page");
 
 app.listen(config.port, () => {
   console.log(`Listening on http://localhost:${config.port}`);
