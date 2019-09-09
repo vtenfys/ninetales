@@ -1,5 +1,4 @@
 {
-  "compressionLevel": 9,
   "port": 3000,
   "alias": {
     "react": "preact/compat"

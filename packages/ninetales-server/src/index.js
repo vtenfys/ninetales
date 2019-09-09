@@ -1,13 +1,10 @@
 import express from "express";
-import compression from "compression";
 import registerRoute from "./register-route";
 import config from "./config.json";
 
 const app = express();
 
-app.use(compression({ level: config.compressionLevel }));
 app.use(express.static(`${process.cwd()}/dist/client`));
-
 app.set("view engine", "ejs");
 app.set("views", "./views");
 
