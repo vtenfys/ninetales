@@ -1,4 +1,4 @@
-<img align="right" height="100" src="https://img.pokemondb.net/artwork/large/ninetales.jpg" alt="Ninetales" />
+<img align="right" height="120" src="https://img.pokemondb.net/artwork/large/ninetales.jpg" alt="Ninetales" />
 
 # Ninetales
 
