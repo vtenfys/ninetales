@@ -4,7 +4,7 @@ Ninetales is a new way to create modern, server-based JavaScript websites and ap
 
 ## Local Development
 
-You can develop and test Ninetales locally using [Verdaccio](https://github.com/verdaccio/verdaccio). Note: the `verdaccio` package script requires `bash` to be installed if running on Windows.
+You can develop and test Ninetales locally using [Verdaccio](https://github.com/verdaccio/verdaccio). Note: the `verdaccio` package script requires `bash` to be installed, and hasn't been tested on Windows.
 
 ### Building and Publishing to Verdaccio
 
