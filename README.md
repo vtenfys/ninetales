@@ -1,3 +1,5 @@
+<img align="right" height="100" src="https://img.pokemondb.net/artwork/large/ninetales.jpg" alt="Ninetales" />
+
 # Ninetales
 
 Ninetales is a new way to create modern, server-based JavaScript websites and applications.
