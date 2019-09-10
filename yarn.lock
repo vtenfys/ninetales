@@ -2707,14 +2707,7 @@ posix-character-classes@^0.1.0:
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
   integrity sha1-AerA/jta9xoqbAL+q7jB/vfgDqs=
 
-preact-render-to-string@^5.0.6:
-  version "5.0.6"
-  resolved "https://registry.yarnpkg.com/preact-render-to-string/-/preact-render-to-string-5.0.6.tgz#3e89078f78e88157a044f91914b348894cd18d03"
-  integrity sha512-VOsbY/YNPJVIxEdzkUJNwhZNEOE5/w4lbEAsBvhsImbpeDsDhCtUvzpZav/j8tHF8HcG6lNWljmkmXfy+KEnsQ==
-  dependencies:
-    pretty-format "^3.8.0"
-
-preact@^10.0.0-rc.1, preact@^10.0.0-rc.2:
+preact@^10.0.0-rc.2:
   version "10.0.0-rc.2"
   resolved "https://registry.yarnpkg.com/preact/-/preact-10.0.0-rc.2.tgz#267d0bc2529792bb7c8802fb5a9401ac4fdeb53f"
   integrity sha512-dM/ZK7ZIPDNPihNPcKmjK4EItcF4XH+mBAgcQ0JvMLzjvW0ZwCwaMcA5yBz8nB5WRwsm5zamgO0Y8rgAy8HB0Q==
@@ -2735,11 +2728,6 @@ prettier@^1.18.2:
   version "1.18.2"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.18.2.tgz#6823e7c5900017b4bd3acf46fe9ac4b4d7bda9ea"
   integrity sha512-OeHeMc0JhFE9idD4ZdtNibzY0+TPHSpSSb9h8FqtP+YnoZZ1sl8Vc9b1sasjfymH3SonAF4QcA2+mzHPhMvIiw==
-
-pretty-format@^3.8.0:
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-3.8.0.tgz#bfbed56d5e9a776645f4b1ff7aa1a3ac4fa3c385"
-  integrity sha1-v77VbV6ad2ZF9LH/eqGjrE+jw4U=
 
 pretty@^2.0.0:
   version "2.0.0"
