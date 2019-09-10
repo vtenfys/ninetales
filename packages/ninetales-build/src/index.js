@@ -1,8 +1,15 @@
 import * as babel from "@babel/core";
+import recursive from "recursive-readdir";
 
-const { code } = babel.transformFileSync(`${process.cwd()}/src/views/Page.js`, {
-  presets: ["@ninetales/build"],
-  configFile: false,
-});
+export default async function main() {
+  for (const file of await recursive("src")) {
+    const { code } = await babel.transformAsync(file, {
+      presets: ["@ninetales/build"],
+    });
 
-console.log(code);
+    console.log(code);
+  }
+}
+
+// TODO: remove function name and call from CLI
+main();

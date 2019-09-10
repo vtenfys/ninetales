@@ -6,8 +6,8 @@
   "scripts": {
     "build": "yarn workspaces run build",
     "clean": "yarn workspaces run clean",
-    "lint": "eslint . --ignore-path .gitignore",
-    "verdaccio": "bash scripts/verdaccio.sh"
+    "verdaccio": "bash scripts/verdaccio.sh",
+    "lint": "eslint . --ignore-path .gitignore"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.0",
