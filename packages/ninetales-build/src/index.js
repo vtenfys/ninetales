@@ -1,5 +1,7 @@
-import { transformFileSync } from "@babel/core";
+import * as babel from "@babel/core";
 
-console.log(transformFileSync(`${process.cwd()}/src/views/Page.js`), {
-  presets: [require("@ninetales/build-preset")],
-});
+console.log(
+  babel.transformFileSync(`${process.cwd()}/src/views/Page.js`, {
+    configFile: `${__dirname}/build.config.js`,
+  })
+);

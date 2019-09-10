@@ -1,5 +1,5 @@
 {
-  "name": "@ninetales/build-preset",
+  "name": "@ninetales/babel-preset-build",
   "version": "0.1.0",
   "main": "dist/index.js",
   "author": "David Bailey <davidbailey00@outlook.com>",

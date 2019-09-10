@@ -13,6 +13,6 @@
   },
   "dependencies": {
     "@babel/core": "^7.6.0",
-    "@ninetales/build-preset": "0.1.0"
+    "@ninetales/babel-preset-build": "0.1.0"
   }
 }
