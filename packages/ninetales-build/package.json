@@ -10,5 +10,9 @@
   "scripts": {
     "build": "babel --root-mode upward src --out-dir dist --copy-files",
     "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@babel/core": "^7.6.0",
+    "@ninetales/build-preset": "0.1.0"
   }
 }

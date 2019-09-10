@@ -49,7 +49,7 @@ You can install a package from Verdaccio in a project by specifying its registry
 yarn add @ninetales/ninetales --registry http://localhost:4873
 ```
 
-> Note: Ninetales package names are different to their directory names. For example, a package with the directory name `ninetales-foobar` will have the package name `@ninetales/foobar`. The exception to this is the `@ninetales/ninetales` package, whose directory name is just `ninetales`.
+> Note: Ninetales package names are different to their directory names. For example, a package with the directory name `ninetales-foo-bar` will have the package name `@ninetales/foo-bar`. The exception to this is the `@ninetales/ninetales` package, whose directory name is just `ninetales`.
 
 You can also configure Yarn to use the Verdaccio registry by default, instead of specifying it for each add/install command:
 
