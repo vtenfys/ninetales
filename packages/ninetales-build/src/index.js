@@ -1,6 +1,6 @@
 import { transformFileAsync } from "@babel/core";
 import recursive from "recursive-readdir";
-import { outputFile, copyFile } from "fs-extra";
+import { outputFile, copy } from "fs-extra";
 
 export default async function main() {
   // TODO: move these to a global user-modifiable config
@@ -18,10 +18,7 @@ export default async function main() {
 
       await outputFile(outFile, code);
     } else {
-      await copyFile(file, outFile);
+      await copy(file, outFile);
     }
   }
 }
-
-// TODO: remove function name and call from CLI
-main();
