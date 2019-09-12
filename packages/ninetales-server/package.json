@@ -22,6 +22,10 @@
     "serialize-javascript": "^2.1.0",
     "styled-jsx": "^3.2.2"
   },
+  "devDependencies": {
+    "preact": "^10.0.0-rc.3",
+    "preact-render-to-string": "^5.0.6"
+  },
   "peerDependencies": {
     "preact": "^10.0.0-rc.2",
     "preact-render-to-string": "^5.0.6"
