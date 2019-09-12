@@ -21,9 +21,6 @@
     "serialize-javascript": "^2.1.0",
     "styled-jsx": "^3.2.2"
   },
-  "devDependencies": {
-    "@babel/plugin-transform-react-jsx": "^7.3.0"
-  },
   "peerDependencies": {
     "preact": "^10.0.0-rc.2",
     "preact-render-to-string": "^5.0.6"
