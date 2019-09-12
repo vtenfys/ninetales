@@ -43,8 +43,8 @@ function renderResponse(res, Page, locals) {
   });
 }
 
-function registerRoute(app, route, view) {
-  app.get(route, async (req, res) => {
+export default function registerRoute(route, view) {
+  this.get(route, async (req, res) => {
     const component = `${process.cwd()}/dist/server/views/${view}`;
 
     if (process.env.NODE_ENV === "development") {
@@ -58,8 +58,4 @@ function registerRoute(app, route, view) {
       data: await getData(),
     });
   });
-}
-
-export default function(app) {
-  return (route, view) => registerRoute(app, route, view);
 }
