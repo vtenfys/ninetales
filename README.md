@@ -31,14 +31,12 @@ You can develop and test Ninetales locally using [Verdaccio](https://github.com/
    yarn verdaccio
    ```
 
-4. You can also build and/or publish a particular package with the following commands:
+4. You can also build and/or publish a particular package by running the same commands inside its directory:
 
    ```sh
    cd packages/ninetales
    yarn build
-
-   cd <project root>
-   yarn verdaccio ninetales
+   yarn verdaccio
    ```
 
 ### Installing from Verdaccio

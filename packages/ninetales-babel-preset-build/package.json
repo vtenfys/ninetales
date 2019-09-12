@@ -8,7 +8,8 @@
     "index.js"
   ],
   "scripts": {
-    "build": "echo \"No build required\""
+    "build": "echo \"No build required\"",
+    "verdaccio": "bash ../../scripts/verdaccio.sh"
   },
   "dependencies": {
     "@babel/plugin-transform-react-jsx": "^7.3.0",
