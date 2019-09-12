@@ -16,8 +16,7 @@ app.get("/.data/*", (req, res, next) => {
 });
 
 // register user-defined routes
-// require(`${process.cwd()}/dist/routes`).default(registerRoute(app));
-registerRoute(app)("/*", "Page");
+require(`${process.cwd()}/dist/server/routes`).default(registerRoute(app));
 
 export default app;
 
