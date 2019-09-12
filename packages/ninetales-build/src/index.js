@@ -9,7 +9,7 @@ export default async function main() {
   const extensions = ["js", "jsx"];
 
   for (const file of await recursive(sourceDir)) {
-    const outFile = outputDir + file.slice(sourceDir.length);
+    const outFile = `${outputDir}/server/${file.slice(sourceDir.length)}`;
 
     if (extensions.find(ext => file.endsWith(`.${ext}`))) {
       const { code } = await transformFileAsync(file, {
