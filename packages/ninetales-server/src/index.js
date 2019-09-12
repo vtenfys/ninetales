@@ -18,6 +18,9 @@ app.get("/.data/*", (req, res, next) => {
 // require(`${process.cwd()}/dist/routes`).default(registerRoute(app));
 registerRoute(app)("/*", "Page");
 
+export default app;
+
+// TODO: move to CLI
 app.listen(config.port, () => {
   console.log(`Listening on http://localhost:${config.port}`);
 });
