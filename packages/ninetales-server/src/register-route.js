@@ -16,10 +16,14 @@ const { flushToHTML } = require("styled-jsx/server");
 function renderResponse(res, Page, locals) {
   const { type, data } = locals;
 
+  if (data.status !== undefined) {
+    res.status(data.status);
+  }
+
   if (type === "full") {
-    locals.app = render(<Page {...data} />);
+    locals.app = render(<Page {...data.props} />);
     locals.styles = flushToHTML();
-    locals.serializedData = serialize(data, { isJSON: true });
+    locals.serialize = serialize;
   }
 
   res.render("page", locals, (err, html) => {

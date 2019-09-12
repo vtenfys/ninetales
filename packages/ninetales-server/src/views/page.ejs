@@ -6,8 +6,8 @@
   <body>
     <div id="app"><%- type === "full" ? app : "" %></div>
     <% if (type === "full") { %>
-    <script id="data" type="application/json">
-      <%- serializedData %>
+    <script id="props" type="application/json">
+      <%- serialize(data.props, { isJSON: true }) %>
     </script>
     <script src="/index.js"></script>
     <% } %>
