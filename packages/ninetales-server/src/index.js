@@ -4,9 +4,9 @@ import config from "./config.json";
 
 const app = express();
 
-app.use(express.static(`${process.cwd()}/dist/client`));
+app.use(express.static("./dist/client"));
 app.set("view engine", "ejs");
-app.set("views", "./views");
+app.set("views", `${__dirname}/views`);
 
 app.get("/.data/*", (req, res, next) => {
   res.locals.type = "data";
