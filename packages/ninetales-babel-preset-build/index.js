@@ -10,5 +10,6 @@ module.exports = () => ({
         pragmaFrag: "Fragment",
       },
     ],
+    require("styled-jsx/babel"),
   ],
 });
