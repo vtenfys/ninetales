@@ -17,5 +17,8 @@
     "@babel/preset-env": "^7.6.0",
     "babel-plugin-root-import": "^6.4.1",
     "styled-jsx": "^3.2.2"
+  },
+  "peerDependencies": {
+    "@ninetales/ninetales": "^0.1.0"
   }
 }
