@@ -8,7 +8,7 @@
     "index.js"
   ],
   "scripts": {
-    "build": "echo \"No build required\"",
+    "build": "echo \"No build required.\"",
     "verdaccio": "bash ../../scripts/verdaccio.sh"
   },
   "dependencies": {
