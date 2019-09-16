@@ -49,7 +49,7 @@ export default async function main() {
     const viewImport = `./${file.slice(viewsDir.length + 1)}`;
 
     const code = await renderFileAsync(
-      `${__dirname}/view-bundle.ejs`,
+      `${__dirname}/view-entry.ejs`,
       { viewImport },
       { escape: string => JSON.stringify(string) }
     );
