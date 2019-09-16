@@ -31,7 +31,7 @@ async function transformSources(sourceDir, buildDirs, extensions) {
 
     if (extensions.find(ext => file.endsWith(`.${ext}`))) {
       const { code } = await transformFileAsync(file, {
-        presets: ["@ninetales/build/server"],
+        presets: ["@ninetales/babel-preset/server"],
       });
 
       await outputFile(outFile, code);
@@ -56,7 +56,7 @@ async function createViewEntries(buildDirs) {
         { escape: string => JSON.stringify(string) }
       ),
       {
-        presets: ["@ninetales/build/server"],
+        presets: ["@ninetales/babel-preset/server"],
       }
     );
 

@@ -15,7 +15,7 @@
   "dependencies": {
     "@babel/core": "^7.6.0",
     "@babel/runtime": "^7.6.0",
-    "@ninetales/babel-preset-build": "0.1.0",
+    "@ninetales/babel-preset": "0.1.0",
     "ejs": "^2.7.1",
     "es6-promisify": "^6.0.2",
     "fs-extra": "^8.1.0",
