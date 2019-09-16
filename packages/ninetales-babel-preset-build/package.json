@@ -1,11 +1,11 @@
 {
   "name": "@ninetales/babel-preset-build",
   "version": "0.1.0",
-  "main": "dist/index.js",
   "author": "David Bailey <davidbailey00@outlook.com>",
   "license": "UNLICENSED",
   "files": [
-    "index.js"
+    "client.js",
+    "server.js"
   ],
   "scripts": {
     "build": "echo \"No build required.\"",
