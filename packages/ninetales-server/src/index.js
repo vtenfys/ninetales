@@ -5,7 +5,7 @@ import config from "./config.json";
 const app = express();
 
 // TODO: use React to render full HTML rather than EJS
-app.use(express.static("./dist/client"));
+app.use("/.bundles", express.static("./dist/client"));
 app.set("view engine", "ejs");
 app.set("views", `${__dirname}/views`);
 
