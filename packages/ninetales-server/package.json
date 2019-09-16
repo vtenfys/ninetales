@@ -8,7 +8,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "babel --root-mode upward src --out-dir dist --delete-dir-on-start --copy-files",
+    "build": "babel src --out-dir dist --delete-dir-on-start --copy-files",
     "verdaccio": "bash ../../scripts/verdaccio.sh",
     "clean": "rm -rf dist"
   },

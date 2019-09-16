@@ -1,6 +1,6 @@
 import express from "express";
 import registerRoute from "./register-route";
-import config from "./config.json";
+import config from "./config.json"; // TODO: make this a separate package
 
 const app = express();
 

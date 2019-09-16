@@ -1,8 +1,12 @@
 module.exports = () => ({
-  presets: [[require("@babel/preset-env"), { targets: "> 1%, not dead" }]],
+  presets: [
+    [
+      require("@babel/preset-env"),
+      { targets: "> 1%, not dead", modules: false },
+    ],
+  ],
   plugins: [
     require("@babel/plugin-transform-runtime"),
-    require("babel-plugin-root-import"),
     [
       require("@babel/plugin-transform-react-jsx"),
       {
@@ -10,6 +14,5 @@ module.exports = () => ({
         pragmaFrag: "Fragment",
       },
     ],
-    require("styled-jsx/babel"),
   ],
 });

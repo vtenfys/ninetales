@@ -3,10 +3,6 @@
   "version": "0.1.0",
   "author": "David Bailey <davidbailey00@outlook.com>",
   "license": "UNLICENSED",
-  "files": [
-    "client.js",
-    "server.js"
-  ],
   "scripts": {
     "build": "echo \"No build required.\"",
     "verdaccio": "bash ../../scripts/verdaccio.sh"
