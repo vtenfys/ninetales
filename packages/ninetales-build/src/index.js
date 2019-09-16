@@ -1,9 +1,9 @@
-import { transformFileAsync } from "@babel/core";
+import { transformAsync, transformFileAsync } from "@babel/core";
 import { promisify } from "es6-promisify";
 import { renderFile } from "ejs";
 
 import recursive from "recursive-readdir";
-import { outputFile, copy } from "fs-extra";
+import { remove, outputFile, copy } from "fs-extra";
 
 // terminate the process if an error occurs
 process.on("unhandledRejection", err => {
@@ -12,7 +12,7 @@ process.on("unhandledRejection", err => {
 
 const renderFileAsync = promisify(renderFile);
 
-export default async function main() {
+async function prepare() {
   // TODO: move these to a global user-modifiable config
   const sourceDir = "src";
   const outputDir = "dist";
@@ -20,11 +20,12 @@ export default async function main() {
 
   // TODO: check for existence of a non-empty views folder + routes.js
 
-  const buildDirs = {
-    server: `${outputDir}/server`,
-    client: `${outputDir}/client`,
-  };
+  await remove(outputDir);
 
+  return { sourceDir, outputDir, extensions };
+}
+
+async function transformSources(sourceDir, buildDirs, extensions) {
   for (const file of await recursive(sourceDir)) {
     const outFile = `${buildDirs.server}/${file.slice(sourceDir.length + 1)}`;
 
@@ -38,9 +39,9 @@ export default async function main() {
       await copy(file, outFile);
     }
   }
+}
 
-  // TODO: transform the entry files with Babel
-
+async function createViewEntries(buildDirs) {
   const viewsDir = `${buildDirs.server}/views`;
   const ignore = file => !file.endsWith(".js");
 
@@ -48,14 +49,31 @@ export default async function main() {
     const outFile = file.replace(/\.js$/, ".entry.js");
     const viewImport = `./${file.slice(viewsDir.length + 1)}`;
 
-    const code = await renderFileAsync(
-      `${__dirname}/view-entry.ejs`,
-      { viewImport },
-      { escape: string => JSON.stringify(string) }
+    const { code } = await transformAsync(
+      await renderFileAsync(
+        `${__dirname}/view-entry.ejs`,
+        { viewImport },
+        { escape: string => JSON.stringify(string) }
+      ),
+      {
+        presets: ["@ninetales/build"],
+      }
     );
 
     await outputFile(outFile, code);
   }
+}
+
+export default async function main() {
+  const { sourceDir, outputDir, extensions } = await prepare();
+
+  const buildDirs = {
+    server: `${outputDir}/server`,
+    client: `${outputDir}/client`,
+  };
+
+  await transformSources(sourceDir, buildDirs, extensions);
+  await createViewEntries(buildDirs);
 
   // TODO: create client bundle using Webpack
 }
