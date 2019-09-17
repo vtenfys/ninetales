@@ -12,10 +12,7 @@
   "devDependencies": {
     "@babel/cli": "^7.6.0",
     "@babel/core": "^7.6.0",
-    "@babel/plugin-transform-react-jsx": "^7.3.0",
-    "@babel/plugin-transform-runtime": "^7.6.0",
-    "@babel/preset-env": "^7.6.0",
-    "babel-plugin-root-import": "^6.4.1",
+    "@ninetales/babel-preset": "^0.1.0",
     "eslint": "^6.4.0",
     "eslint-config-prettier": "^6.2.0",
     "eslint-plugin-prettier": "^3.1.0",
