@@ -16,5 +16,8 @@
     "@babel/runtime": "^7.6.0",
     "@ninetales/build": "^0.1.0",
     "@ninetales/server": "^0.1.0"
+  },
+  "peerDependencies": {
+    "preact": "^10.0.0-rc.3"
   }
 }
