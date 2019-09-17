@@ -1,4 +1,4 @@
-import { transformFileAsync } from "@babel/core";
+import { transformAsync, transformFileAsync } from "@babel/core";
 import { promisify } from "es6-promisify";
 import { renderFile } from "ejs";
 
@@ -56,10 +56,15 @@ async function createViewEntries(prebuildDir, extensions) {
     const outFile = `${fileWithoutExtension}.entry.js`;
     const viewImport = "." + fileWithoutExtension.slice(viewsDir.length);
 
-    const code = await renderFileAsync(
-      `${__dirname}/view-entry.ejs`,
-      { viewImport },
-      { escape: string => JSON.stringify(string) }
+    const { code } = await transformAsync(
+      await renderFileAsync(
+        `${__dirname}/view-entry.ejs`,
+        { viewImport },
+        { escape: string => JSON.stringify(string) }
+      ),
+      {
+        presets: [`@ninetales/babel-preset/build/browser`],
+      }
     );
 
     await outputFile(outFile, code);
