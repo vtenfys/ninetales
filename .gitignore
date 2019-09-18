@@ -1,4 +1,11 @@
+# Yarn/NPM ignores
 node_modules/
 dist/
-.cache/
 yarn-error.log
+
+# VS Code ignores
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json

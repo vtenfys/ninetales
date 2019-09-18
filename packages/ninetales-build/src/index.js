@@ -1,11 +1,14 @@
 import { transformAsync, transformFileAsync } from "@babel/core";
 import { promisify } from "es6-promisify";
+import webpack from "webpack";
 import { renderFile } from "ejs";
 
 import recursive from "recursive-readdir";
 import { remove, outputFile, copy } from "fs-extra";
+import { resolve } from "path";
 
 const renderFileAsync = promisify(renderFile);
+const webpackAsync = promisify(webpack);
 
 // terminate the process if an error occurs
 process.on("unhandledRejection", err => {
@@ -25,6 +28,7 @@ async function prepare() {
   };
 
   // TODO: check for existence of a non-empty views folder + routes.js
+  // TODO: check for reserved filenames: entrypoints.json, *.entry.js
 
   await remove(outputDir);
 
@@ -49,12 +53,13 @@ async function build(sourceDir, serverDir, preset, extensions) {
 
 async function createViewEntries(prebuildDir, extensions) {
   const viewsDir = `${prebuildDir}/views`;
+  const entries = [];
   const ignore = file => !extensions.find(ext => file.endsWith(`.${ext}`));
 
   for (const file of await recursive(viewsDir, [ignore])) {
-    const fileWithoutExtension = file.replace(/\.([^.]+)?$/, "");
-    const outFile = `${fileWithoutExtension}.entry.js`;
-    const viewImport = "." + fileWithoutExtension.slice(viewsDir.length);
+    const viewName = file.replace(/\.([^.]+)?$/, "").slice(viewsDir.length + 1);
+    const outFile = `${viewsDir}/${viewName}.entry.js`;
+    const viewImport = `./${viewName}`;
 
     const { code } = await transformAsync(
       await renderFileAsync(
@@ -68,7 +73,54 @@ async function createViewEntries(prebuildDir, extensions) {
     );
 
     await outputFile(outFile, code);
+    entries.push([viewName, outFile]);
   }
+
+  return entries;
+}
+
+async function createClientBundles(clientDir, serverDir, entries) {
+  const webpackEntry = {};
+  entries.forEach(([view, entry]) => {
+    webpackEntry[view] = `./${entry}`;
+  });
+
+  const config = {
+    mode: "production", // TODO: do this dynamically
+    entry: webpackEntry,
+    output: {
+      filename: "[chunkhash].bundle.js",
+      path: resolve(clientDir),
+    },
+    resolve: {
+      // TODO: integrate with config
+      alias: {
+        react: "preact/compat",
+      },
+    },
+    optimization: {
+      usedExports: true,
+      splitChunks: {
+        chunks: "all",
+      },
+    },
+  };
+
+  const stats = await webpackAsync(config);
+
+  if (stats.hasWarnings()) {
+    stats.warnings.forEach(warning => console.warn(warning));
+  }
+  if (stats.hasErrors()) {
+    stats.errors.forEach(error => console.error(error));
+    process.exit(1);
+  }
+
+  const { entrypoints } = stats.toJson();
+  await outputFile(
+    `${serverDir}/entrypoints.json`,
+    JSON.stringify(entrypoints)
+  );
 }
 
 export default async function main() {
@@ -81,7 +133,11 @@ export default async function main() {
   await build(sourceDir, buildDirs.prebuild, "browser", extensions);
 
   // create view entries
-  await createViewEntries(buildDirs.prebuild, extensions);
+  const entries = await createViewEntries(buildDirs.prebuild, extensions);
 
-  // TODO: create client bundle using Webpack
+  // create client bundles
+  await createClientBundles(buildDirs.client, buildDirs.server, entries);
 }
+
+// TODO: call this from the CLI instead
+main();
