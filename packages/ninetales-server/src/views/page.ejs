@@ -9,7 +9,8 @@
     <script id="props" type="application/json">
       <%- serialize(data.props, { isJSON: true }) %>
     </script>
-    <script src="/index.js"></script>
-    <% } %>
+    <% bundles.forEach(bundle => { %>
+    <script src="/.bundles/<%= bundle %>"></script>
+    <% }); %><% } %>
   </body>
 </html>

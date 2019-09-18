@@ -1,8 +1,12 @@
 import express from "express";
-import registerRoute from "./register-route";
+import renderResponse from "./render-response";
 import config from "./config.json"; // TODO: make this a separate package
+const entrypoints = require(`${process.cwd()}/dist/server/entrypoints.json`);
 
 const app = express();
+
+// TODO: get "src", "dist" directory names from global config rather than
+// hardcoding
 
 // TODO: use React to render full HTML rather than EJS
 app.use("/.bundles", express.static("./dist/client"));
@@ -16,7 +20,24 @@ app.get("/.data/*", (req, res, next) => {
 });
 
 // register user-defined routes
-require(`${process.cwd()}/dist/server/routes`).default(registerRoute.bind(app));
+const routes = require(`${process.cwd()}/dist/server/routes`).default;
+routes.forEach(({ path, view }) => {
+  app.get(path, async (req, res) => {
+    const component = `${process.cwd()}/dist/server/views/${view}`;
+
+    if (process.env.NODE_ENV === "development") {
+      delete require.cache[require.resolve(component)];
+    }
+
+    const { default: View, getData } = require(component);
+    const { assets: bundles } = entrypoints[view];
+
+    renderResponse(res, View, bundles, {
+      type: res.locals.type || "full",
+      data: await getData(),
+    });
+  });
+});
 
 export default app;
 

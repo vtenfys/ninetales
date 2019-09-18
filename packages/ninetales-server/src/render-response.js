@@ -13,7 +13,7 @@ moduleAlias.addAliases(config.alias);
 // use require() to work around ilearnio/module-alias/issues/59
 const { flushToHTML } = require("styled-jsx/server");
 
-function renderResponse(res, View, locals) {
+export default function renderResponse(res, View, bundles, locals) {
   const { type, data } = locals;
 
   if (data.status !== undefined) {
@@ -24,6 +24,7 @@ function renderResponse(res, View, locals) {
     locals.app = render(<View {...data.props} />);
     locals.styles = flushToHTML();
     locals.serialize = serialize;
+    locals.bundles = bundles;
   }
 
   res.render("page", locals, (err, html) => {
@@ -40,22 +41,5 @@ function renderResponse(res, View, locals) {
     } else {
       res.send(html);
     }
-  });
-}
-
-export default function registerRoute(route, view) {
-  this.get(route, async (req, res) => {
-    const component = `${process.cwd()}/dist/server/views/${view}`;
-
-    if (process.env.NODE_ENV === "development") {
-      delete require.cache[require.resolve(component)];
-    }
-
-    const { default: View, getData } = require(component);
-
-    renderResponse(res, View, {
-      type: res.locals.type || "full",
-      data: await getData(),
-    });
   });
 }
