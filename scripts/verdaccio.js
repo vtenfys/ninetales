@@ -1,25 +1,31 @@
 const { writeFileSync } = require("fs");
 const { execSync } = require("child_process");
 
-const packagejson = require(`${process.cwd()}/package.json`);
+const pkg = require(`${process.cwd()}/package.json`);
+const devPkg = { ...pkg };
+
 const REGISTRY = "http://localhost:4873/";
 
-function writePackageJSON(packageJSON) {
-  writeFileSync("./package.json", JSON.stringify(packageJSON, null, 2) + "\n");
+function writePackage(pkg) {
+  writeFileSync("./package.json", JSON.stringify(pkg, null, 2) + "\n");
 }
 
-writePackageJSON({
-  ...packagejson,
-  version: `${packagejson.version}-dev.${Date.now()}`,
+devPkg.dependencies = { ...pkg.dependencies };
+Object.keys(pkg.dependencies).forEach(name => {
+  if (name.startsWith("@ninetales/")) {
+    devPkg.dependencies[name] = "latest";
+  }
 });
 
-let failed = false;
+devPkg.version += `-dev.${Date.now()}`;
+writePackage(devPkg);
 
+let failed = false;
 try {
   execSync(`npm publish --registry ${REGISTRY}`);
 } catch (err) {
   failed = true;
 } finally {
-  writePackageJSON(packagejson);
+  writePackage(pkg);
   if (failed) process.exit(1);
 }
