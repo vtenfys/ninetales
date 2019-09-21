@@ -10,12 +10,20 @@ function writePackage(pkg) {
   writeFileSync("./package.json", JSON.stringify(pkg, null, 2) + "\n");
 }
 
-devPkg.dependencies = { ...pkg.dependencies };
-Object.keys(pkg.dependencies).forEach(name => {
-  if (name.startsWith("@ninetales/")) {
-    devPkg.dependencies[name] = "latest";
-  }
-});
+function updateDependencies(type) {
+  if (pkg[type] === undefined) return;
+  devPkg[type] = { ...pkg[type] };
+
+  Object.keys(pkg[type]).forEach(name => {
+    if (name.startsWith("@ninetales/")) {
+      devPkg[type][name] += "-dev";
+    }
+  });
+}
+
+updateDependencies("dependencies");
+updateDependencies("devDependencies");
+updateDependencies("peerDependencies");
 
 devPkg.version += `-dev.${Date.now()}`;
 writePackage(devPkg);
