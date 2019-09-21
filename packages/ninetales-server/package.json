@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build": "babel src --out-dir dist --delete-dir-on-start --copy-files",
-    "verdaccio": "bash ../../scripts/verdaccio.sh",
+    "verdaccio": "node ../../scripts/verdaccio.js",
     "clean": "rm -rf dist"
   },
   "dependencies": {
