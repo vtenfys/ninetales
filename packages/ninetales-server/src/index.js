@@ -3,45 +3,53 @@ import renderResponse from "./render-response";
 import config from "./config.json"; // TODO: make this a separate package
 const entrypoints = require(`${process.cwd()}/dist/server/entrypoints.json`);
 
-const app = express();
+function prepare() {
+  const app = express();
 
-// TODO: get "src", "dist" directory names from global config rather than
-// hardcoding
+  // TODO: check for existence of a build
 
-// TODO: use React to render full HTML rather than EJS
-app.use("/.bundles", express.static("./dist/client"));
-app.set("view engine", "ejs");
-app.set("views", `${__dirname}/views`);
+  app.use("/.bundles", express.static("./dist/client"));
+  // TODO: use React to render full HTML rather than EJS
+  app.set("view engine", "ejs");
+  app.set("views", `${__dirname}/views`);
 
-app.get("/.data/*", (req, res, next) => {
-  res.locals.type = "data";
-  req.url = req.path.replace(/^\/\.data/, "");
-  next();
-});
+  app.get("/.data/*", (req, res, next) => {
+    res.locals.type = "data";
+    req.url = req.path.replace(/^\/\.data/, "");
+    next();
+  });
 
-// register user-defined routes
-const routes = require(`${process.cwd()}/dist/server/routes`).default;
-routes.forEach(({ path, view }) => {
-  app.get(path, async (req, res) => {
-    const component = `${process.cwd()}/dist/server/views/${view}`;
+  return app;
+}
 
-    if (process.env.NODE_ENV === "development") {
-      delete require.cache[require.resolve(component)];
-    }
+function registerRoutes(app) {
+  // TODO: get "dist" directory name from global config rather than hardcoding
 
-    const { default: View, getData } = require(component);
-    const { assets: bundles } = entrypoints[view];
+  const routes = require(`${process.cwd()}/dist/server/routes`).default;
+  routes.forEach(({ path, view }) => {
+    app.get(path, async (req, res) => {
+      const component = `${process.cwd()}/dist/server/views/${view}`;
 
-    renderResponse(res, View, bundles, {
-      type: res.locals.type || "full",
-      data: await getData(),
+      if (process.env.NODE_ENV === "development") {
+        delete require.cache[require.resolve(component)];
+      }
+
+      const { default: View, getData } = require(component);
+      const { assets: bundles } = entrypoints[view];
+
+      renderResponse(res, View, bundles, {
+        type: res.locals.type || "full",
+        data: await getData(),
+      });
     });
   });
-});
+}
 
-export default app;
+export default function main() {
+  const app = prepare();
+  registerRoutes(app);
 
-// TODO: move to CLI
-app.listen(config.port, () => {
-  console.log(`Listening on http://localhost:${config.port}`);
-});
+  app.listen(config.port, () => {
+    console.log(`Listening on http://localhost:${config.port}`);
+  });
+}
