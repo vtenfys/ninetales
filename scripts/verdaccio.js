@@ -28,6 +28,11 @@ updateDependencies("peerDependencies");
 devPkg.version += `-dev.${Date.now()}`;
 writePackage(devPkg);
 
+process.on("SIGINT", () => {
+  writePackage(pkg);
+  process.exit(1);
+});
+
 let failed = false;
 try {
   execSync(`npm publish --registry ${REGISTRY}`);
