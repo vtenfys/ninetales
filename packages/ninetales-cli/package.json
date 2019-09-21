@@ -1,7 +1,9 @@
 {
-  "name": "@ninetales/ninetales",
+  "name": "@ninetales/cli",
   "version": "0.1.0",
-  "main": "dist/index.js",
+  "bin": {
+    "ninetales": "./dist/index.js"
+  },
   "author": "David Bailey <davidbailey00@outlook.com>",
   "license": "UNLICENSED",
   "files": [
@@ -13,12 +15,9 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@babel/runtime": "^7.6.0",
-    "@ninetales/build": "^0.1.0",
-    "@ninetales/cli": "^0.1.0",
-    "@ninetales/server": "^0.1.0"
+    "yargs": "^14.0.0"
   },
-  "peerDependencies": {
-    "preact": "^10.0.0-rc.3"
+  "comments": {
+    "@ninetales/ninetales": "for using in a project (watch/build/serve)"
   }
 }

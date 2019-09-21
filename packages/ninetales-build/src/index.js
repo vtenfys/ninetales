@@ -138,6 +138,3 @@ export default async function main() {
   // create client bundles
   await createClientBundles(buildDirs.client, buildDirs.server, entries);
 }
-
-// TODO: call this from the CLI instead
-main();
