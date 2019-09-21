@@ -13,8 +13,13 @@ writePackageJSON({
   version: `${packagejson.version}-dev.${Date.now()}`,
 });
 
+let failed = false;
+
 try {
   execSync(`npm publish --registry ${REGISTRY}`);
+} catch (err) {
+  failed = true;
 } finally {
   writePackageJSON(packagejson);
+  if (failed) process.exit(1);
 }
