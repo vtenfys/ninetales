@@ -33,7 +33,7 @@ try {
   execSync(`npm publish --registry ${REGISTRY}`);
 } catch (err) {
   failed = true;
-} finally {
-  writePackage(pkg);
-  if (failed) process.exit(1);
 }
+
+writePackage(pkg);
+if (failed) process.exit(1);
