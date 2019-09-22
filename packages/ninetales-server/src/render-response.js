@@ -33,7 +33,7 @@ function renderResponse(res, { View, bundles, full, data }) {
   if (full) {
     res.send(html);
   } else {
-    res.json({ html, data });
+    res.json({ html, data, bundles });
   }
 }
 
