@@ -1,7 +1,6 @@
 import express from "express";
-import renderResponse from "./render-response";
 import config from "./config.json"; // TODO: make this a separate package
-const entrypoints = require(`${process.cwd()}/dist/server/entrypoints.json`);
+import registerRoutes from "./register-routes";
 
 function prepare() {
   const app = express();
@@ -20,29 +19,6 @@ function prepare() {
   });
 
   return app;
-}
-
-function registerRoutes(app) {
-  // TODO: get "dist" directory name from global config rather than hardcoding
-
-  const routes = require(`${process.cwd()}/dist/server/routes`).default;
-  routes.forEach(({ path, view }) => {
-    app.get(path, async (req, res) => {
-      const component = `${process.cwd()}/dist/server/views/${view}`;
-
-      if (process.env.NODE_ENV === "development") {
-        delete require.cache[require.resolve(component)];
-      }
-
-      const { default: View, getData } = require(component);
-      const { assets: bundles } = entrypoints[view];
-
-      renderResponse(res, View, bundles, {
-        type: res.locals.type || "full",
-        data: await getData(),
-      });
-    });
-  });
 }
 
 export default function main() {

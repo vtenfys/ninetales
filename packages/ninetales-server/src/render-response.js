@@ -1,4 +1,6 @@
 import config from "./config.json";
+import moduleAlias from "module-alias";
+moduleAlias.addAliases(config.alias);
 
 import pretty from "pretty";
 import { minify } from "html-minifier";
@@ -6,12 +8,7 @@ import serialize from "serialize-javascript";
 
 import { h } from "preact";
 import render from "preact-render-to-string";
-
-import moduleAlias from "module-alias";
-moduleAlias.addAliases(config.alias);
-
-// use require() to work around ilearnio/module-alias/issues/59
-const { flushToHTML } = require("styled-jsx/server");
+import { flushToHTML } from "styled-jsx/server";
 
 export default function renderResponse(res, View, bundles, locals) {
   const { type, data } = locals;
