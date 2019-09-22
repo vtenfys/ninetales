@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import yargs from "yargs";
 
+// TODO: only catch require errors, not everything else
+
 yargs
   .command(
     "build",

@@ -20,7 +20,7 @@ function registerRoutes(app) {
         View,
         bundles,
         full: !res.locals.minimal,
-        data: await getData(),
+        data: await getData(req),
       });
     });
   });
