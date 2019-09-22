@@ -8,11 +8,11 @@
     "dist"
   ],
   "scripts": {
+    "clean": "rimraf dist",
     "build": "concurrently 'yarn build:browser' 'yarn build:node'",
-    "build:browser": "babel src --out-dir dist/browser --presets=@ninetales/babel-preset/browser --delete-dir-on-start --copy-files",
-    "build:node": "babel src --out-dir dist/node --presets=@ninetales/babel-preset/node --delete-dir-on-start --copy-files",
-    "verdaccio": "node ../../scripts/verdaccio.js",
-    "clean": "rm -rf dist"
+    "build:browser": "babel src --out-dir dist/browser --delete-dir-on-start",
+    "build:node": "babel src --out-dir dist/node --config-file ./node.babelrc --delete-dir-on-start",
+    "verdaccio": "node ../../scripts/verdaccio.js"
   },
   "dependencies": {
     "@babel/runtime": "^7.6.0",

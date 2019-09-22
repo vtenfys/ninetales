@@ -4,9 +4,9 @@
   "author": "David Bailey <davidbailey00@outlook.com>",
   "license": "UNLICENSED",
   "scripts": {
+    "clean": "echo \"No clean required.\"",
     "build": "echo \"No build required.\"",
-    "verdaccio": "node ../../scripts/verdaccio.js",
-    "clean": "echo \"No clean required.\""
+    "verdaccio": "node ../../scripts/verdaccio.js"
   },
   "dependencies": {
     "@babel/plugin-transform-react-jsx": "^7.3.0",

@@ -8,9 +8,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "babel src --out-dir dist --delete-dir-on-start --copy-files",
-    "verdaccio": "node ../../scripts/verdaccio.js",
-    "clean": "rm -rf dist"
+    "clean": "rimraf dist",
+    "build": "babel src --out-dir dist --delete-dir-on-start",
+    "verdaccio": "node ../../scripts/verdaccio.js"
   },
   "dependencies": {
     "@babel/runtime": "^7.6.0",
