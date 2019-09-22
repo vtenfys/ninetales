@@ -4,7 +4,11 @@ module.exports = {
     node: true,
     es6: true,
   },
-  extends: ["eslint:recommended", "plugin:prettier/recommended", "plugin:react/recommended"],
+  extends: [
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "plugin:react/recommended",
+  ],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -17,5 +21,8 @@ module.exports = {
       pragma: "h",
       version: require("preact/compat").version,
     },
+  },
+  rules: {
+    "react/prop-types": 0,
   },
 };

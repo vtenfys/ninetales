@@ -1,7 +1,7 @@
 import renderResponse from "./render-response";
 const entrypoints = require(`${process.cwd()}/dist/server/entrypoints.json`);
 
-export default function registerRoutes(app) {
+function registerRoutes(app) {
   // TODO: get "dist" directory name from global config rather than hardcoding
 
   const routes = require(`${process.cwd()}/dist/server/routes`).default;
@@ -16,10 +16,14 @@ export default function registerRoutes(app) {
       const { default: View, getData } = require(component);
       const { assets: bundles } = entrypoints[view];
 
-      renderResponse(res, View, bundles, {
-        type: res.locals.type || "full",
+      renderResponse(res, {
+        View,
+        bundles,
+        full: !res.locals.minimal,
         data: await getData(),
       });
     });
   });
 }
+
+export default registerRoutes;

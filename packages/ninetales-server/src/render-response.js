@@ -2,41 +2,38 @@ import config from "./config.json";
 import moduleAlias from "module-alias";
 moduleAlias.addAliases(config.alias);
 
-import pretty from "pretty";
-import { minify } from "html-minifier";
-import serialize from "serialize-javascript";
-
 import { h } from "preact";
 import render from "preact-render-to-string";
-import { flushToHTML } from "styled-jsx/server";
+const flush = require("styled-jsx/server").default;
 
-export default function renderResponse(res, View, bundles, locals) {
-  const { type, data } = locals;
+import HTML, { doctype } from "./html";
+import pretty from "pretty";
 
+function renderResponse(res, { View, bundles, full, data }) {
   if (data.status !== undefined) {
     res.status(data.status);
   }
 
-  if (type === "full") {
-    locals.app = render(<View {...data.props} />);
-    locals.styles = flushToHTML();
-    locals.serialize = serialize;
-    locals.bundles = bundles;
+  const htmlProps = { full };
+
+  if (full) {
+    htmlProps.app = render(<View {...data.props} />);
+    htmlProps.appProps = data.props;
+    htmlProps.styles = flush();
+    htmlProps.bundles = bundles;
   }
 
-  res.render("page", locals, (err, html) => {
-    if (err) throw err;
+  let html = doctype + render(<HTML {...htmlProps} />);
 
-    if (process.env.NODE_ENV === "development") {
-      html = pretty(html);
-    } else {
-      html = minify(html, config.minify);
-    }
+  if (process.env.NODE_ENV === "development") {
+    html = pretty(html);
+  }
 
-    if (type === "data") {
-      res.json({ html, data });
-    } else {
-      res.send(html);
-    }
-  });
+  if (full) {
+    res.send(html);
+  } else {
+    res.json({ html, data });
+  }
 }
+
+export default renderResponse;

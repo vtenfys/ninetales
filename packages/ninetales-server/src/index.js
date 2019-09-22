@@ -13,7 +13,7 @@ function prepare() {
   app.set("views", `${__dirname}/views`);
 
   app.get("/.data/*", (req, res, next) => {
-    res.locals.type = "data";
+    res.locals.minimal = true;
     req.url = req.path.replace(/^\/\.data/, "");
     next();
   });
