@@ -1,5 +1,5 @@
 import renderResponse from "./render-response";
-const entrypoints = require(`${process.cwd()}/dist/server/entrypoints.json`);
+const entrypoints = `${process.cwd()}/dist/server/entrypoints.json`;
 
 function registerRoutes(app) {
   // TODO: get "dist" directory name from global config rather than hardcoding
@@ -11,10 +11,11 @@ function registerRoutes(app) {
 
       if (process.env.NODE_ENV === "development") {
         delete require.cache[require.resolve(component)];
+        delete require.cache[require.resolve(entrypoints)];
       }
 
       const { default: View, getData } = require(component);
-      const { assets: bundles } = entrypoints[view];
+      const { assets: bundles } = require(entrypoints)[view];
 
       renderResponse(res, {
         View,

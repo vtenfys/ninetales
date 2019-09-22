@@ -1,10 +1,5 @@
 module.exports = () => ({
-  presets: [
-    [
-      require("@babel/preset-env"),
-      { targets: "> 1%, not dead", modules: false },
-    ],
-  ],
+  presets: [[require("@babel/preset-env"), { targets: "> 1%, not dead" }]],
   plugins: [
     require("@babel/plugin-transform-runtime"),
     [

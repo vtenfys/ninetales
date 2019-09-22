@@ -34,15 +34,21 @@ async function transition({ html, data, bundles }) {
 }
 
 // TODO: support POST
-async function navigate(href) {
-  const { pathname } = new URL(href, location.origin);
-  const dataURL = `/.data${pathname}`;
+async function navigate(href, push = true) {
+  if (push) {
+    history.pushState(null, document.title, href);
+  }
 
-  const response = await fetch(dataURL);
-  const data = await response.json();
+  const { pathname, search } = new URL(href, location.origin);
+  const dataURL = `/.data${pathname}${search}`;
 
-  await transition(data);
-  history.pushState(href, "", href);
+  try {
+    const response = await fetch(dataURL);
+    const data = await response.json();
+    await transition(data);
+  } catch (e) {
+    location.reload();
+  }
 }
 
 export default navigate;
