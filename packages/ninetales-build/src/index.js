@@ -1,4 +1,4 @@
-import { transformAsync, transformFileAsync } from "@babel/core";
+import { transformFileAsync } from "@babel/core";
 import { promisify } from "es6-promisify";
 import webpack from "webpack";
 import { renderFile } from "ejs";
@@ -35,13 +35,13 @@ async function prepare() {
   return { sourceDir, buildDirs, extensions };
 }
 
-async function build(sourceDir, serverDir, preset, extensions) {
+async function serverBuild(sourceDir, serverDir, extensions) {
   for (const file of await recursive(sourceDir)) {
     const outFile = serverDir + file.slice(sourceDir.length);
 
     if (extensions.find(ext => file.endsWith(`.${ext}`))) {
       const { code } = await transformFileAsync(file, {
-        presets: [`@ninetales/babel-preset/build/${preset}`],
+        presets: [`@ninetales/babel-preset/build/node`],
       });
 
       await outputFile(outFile, code);
@@ -51,7 +51,9 @@ async function build(sourceDir, serverDir, preset, extensions) {
   }
 }
 
-async function createViewEntries(prebuildDir, extensions) {
+async function clientPrebuild(sourceDir, prebuildDir, extensions) {
+  await copy(sourceDir, prebuildDir);
+
   const viewsDir = `${prebuildDir}/views`;
   const entries = [];
   const ignore = file => !extensions.find(ext => file.endsWith(`.${ext}`));
@@ -61,15 +63,10 @@ async function createViewEntries(prebuildDir, extensions) {
     const outFile = `${viewsDir}/${viewName}.entry.js`;
     const viewImport = `./${viewName}`;
 
-    const { code } = await transformAsync(
-      await renderFileAsync(
-        `${__dirname}/view-entry.ejs`,
-        { viewImport },
-        { escape: string => JSON.stringify(string) }
-      ),
-      {
-        presets: [`@ninetales/babel-preset/build/browser`],
-      }
+    const code = await renderFileAsync(
+      `${__dirname}/view-entry.ejs`,
+      { viewImport },
+      { escape: string => JSON.stringify(string) }
     );
 
     await outputFile(outFile, code);
@@ -79,14 +76,15 @@ async function createViewEntries(prebuildDir, extensions) {
   return entries;
 }
 
-async function createClientBundles(clientDir, serverDir, entries) {
+async function createClientBundles(clientDir, serverDir, entries, extensions) {
   const webpackEntry = {};
   entries.forEach(([view, entry]) => {
     webpackEntry[view] = `./${entry}`;
   });
 
+  // TODO: allow configuring Webpack build options
   const config = {
-    mode: "production", // TODO: do this dynamically
+    mode: process.env.NODE_ENV || "production", // TODO: move to global config
     entry: webpackEntry,
     output: {
       filename: "[chunkhash].bundle.js",
@@ -103,6 +101,20 @@ async function createClientBundles(clientDir, serverDir, entries) {
       splitChunks: {
         chunks: "all",
       },
+    },
+    module: {
+      rules: [
+        {
+          test: file => extensions.find(ext => file.endsWith(`.${ext}`)),
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader",
+            options: {
+              presets: ["@ninetales/babel-preset/build/browser"],
+            },
+          },
+        },
+      ],
     },
   };
 
@@ -129,14 +141,23 @@ export default async function main() {
   const { sourceDir, buildDirs, extensions } = await prepare();
 
   // server build
-  await build(sourceDir, buildDirs.server, "node", extensions);
+  await serverBuild(sourceDir, buildDirs.server, extensions);
 
-  // client prebuild
-  await build(sourceDir, buildDirs.prebuild, "browser", extensions);
+  // client prebuild: copy sources and create view entries
+  const entries = await clientPrebuild(
+    sourceDir,
+    buildDirs.prebuild,
+    extensions
+  );
 
-  // create view entries
-  const entries = await createViewEntries(buildDirs.prebuild, extensions);
+  // create client bundles with Webpack + Babel
+  await createClientBundles(
+    buildDirs.client,
+    buildDirs.server,
+    entries,
+    extensions
+  );
 
-  // create client bundles
-  await createClientBundles(buildDirs.client, buildDirs.server, entries);
+  // delete client prebuild
+  await remove(buildDirs.prebuild);
 }
