@@ -157,7 +157,4 @@ export default async function main() {
     entries,
     extensions
   );
-
-  // delete client prebuild
-  await remove(buildDirs.prebuild);
 }
