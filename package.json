@@ -4,9 +4,9 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspaces run build",
-    "clean": "yarn workspaces run clean",
-    "verdaccio": "yarn workspaces run verdaccio",
+    "build": "wsrun build",
+    "clean": "wsrun clean",
+    "verdaccio": "wsrun verdaccio",
     "lint": "eslint . --ignore-path .gitignore"
   },
   "devDependencies": {
@@ -18,7 +18,8 @@
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.3",
     "preact": "^10.0.0-rc.2",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "wsrun": "^5.0.0"
   },
   "comments": {
     "preact": "for specifying react version in eslint-plugin-react"

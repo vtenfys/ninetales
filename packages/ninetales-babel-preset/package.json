@@ -5,7 +5,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "echo \"No build required.\"",
-    "verdaccio": "node ../../scripts/verdaccio.js"
+    "verdaccio": "node ../../scripts/verdaccio.js",
+    "clean": "echo \"No clean required.\""
   },
   "dependencies": {
     "@babel/plugin-transform-react-jsx": "^7.3.0",
