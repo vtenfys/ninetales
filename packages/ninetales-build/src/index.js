@@ -116,7 +116,9 @@ async function createClientBundles(clientDir, serverDir, entries) {
     process.exit(1);
   }
 
+  console.log(stats.toString({ colors: true, excludeModules: true }));
   const { entrypoints } = stats.toJson();
+
   await outputFile(
     `${serverDir}/entrypoints.json`,
     JSON.stringify(entrypoints)
