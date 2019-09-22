@@ -35,9 +35,9 @@ async function prepare() {
   return { sourceDir, buildDirs, extensions };
 }
 
-async function serverBuild(sourceDir, serverDir, extensions) {
+async function serverBuild(sourceDir, buildDirs, extensions) {
   for (const file of await recursive(sourceDir)) {
-    const outFile = serverDir + file.slice(sourceDir.length);
+    const outFile = buildDirs.server + file.slice(sourceDir.length);
 
     if (extensions.find(ext => file.endsWith(`.${ext}`))) {
       const { code } = await transformFileAsync(file, {
@@ -51,10 +51,10 @@ async function serverBuild(sourceDir, serverDir, extensions) {
   }
 }
 
-async function clientPrebuild(sourceDir, prebuildDir, extensions) {
-  await copy(sourceDir, prebuildDir);
+async function clientPrebuild(sourceDir, buildDirs, extensions) {
+  await copy(sourceDir, buildDirs.prebuild);
 
-  const viewsDir = `${prebuildDir}/views`;
+  const viewsDir = `${buildDirs.prebuild}/views`;
   const entries = [];
   const ignore = file => !extensions.find(ext => file.endsWith(`.${ext}`));
 
@@ -76,7 +76,7 @@ async function clientPrebuild(sourceDir, prebuildDir, extensions) {
   return entries;
 }
 
-async function createClientBundles(clientDir, serverDir, entries, extensions) {
+async function createClientBundles(buildDirs, entries, extensions) {
   const webpackEntry = {};
   entries.forEach(([view, entry]) => {
     webpackEntry[view] = `./${entry}`;
@@ -88,7 +88,7 @@ async function createClientBundles(clientDir, serverDir, entries, extensions) {
     entry: webpackEntry,
     output: {
       filename: "[chunkhash].bundle.js",
-      path: resolve(clientDir),
+      path: resolve(buildDirs.client),
     },
     resolve: {
       // TODO: integrate with config
@@ -132,7 +132,7 @@ async function createClientBundles(clientDir, serverDir, entries, extensions) {
   const { entrypoints } = stats.toJson();
 
   await outputFile(
-    `${serverDir}/entrypoints.json`,
+    `${buildDirs.server}/entrypoints.json`,
     JSON.stringify(entrypoints)
   );
 }
@@ -141,20 +141,11 @@ export default async function main() {
   const { sourceDir, buildDirs, extensions } = await prepare();
 
   // server build
-  await serverBuild(sourceDir, buildDirs.server, extensions);
+  await serverBuild(sourceDir, buildDirs, extensions);
 
   // client prebuild: copy sources and create view entries
-  const entries = await clientPrebuild(
-    sourceDir,
-    buildDirs.prebuild,
-    extensions
-  );
+  const entries = await clientPrebuild(sourceDir, buildDirs, extensions);
 
   // create client bundles with Webpack + Babel
-  await createClientBundles(
-    buildDirs.client,
-    buildDirs.server,
-    entries,
-    extensions
-  );
+  await createClientBundles(buildDirs, entries, extensions);
 }

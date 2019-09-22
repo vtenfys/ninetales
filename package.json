@@ -13,6 +13,7 @@
     "@babel/cli": "^7.6.0",
     "@babel/core": "^7.6.0",
     "@ninetales/babel-preset": "^0.1.0",
+    "concurrently": "^4.1.2",
     "eslint": "^6.4.0",
     "eslint-config-prettier": "^6.2.0",
     "eslint-plugin-prettier": "^3.1.0",
