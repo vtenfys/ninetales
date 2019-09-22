@@ -1,6 +1,7 @@
 {
   "editor.formatOnSave": true,
   "files.associations": {
-    "*.ejs": "javascript"
+    "*.ejs": "javascript",
+    ".babelrc.*": "json"
   }
 }

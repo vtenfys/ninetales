@@ -11,7 +11,7 @@
     "clean": "rimraf dist",
     "build": "concurrently 'yarn build:browser' 'yarn build:node'",
     "build:browser": "babel src --out-dir dist/browser --delete-dir-on-start",
-    "build:node": "babel src --out-dir dist/node --config-file ./node.babelrc --delete-dir-on-start",
+    "build:node": "babel src --out-dir dist/node --config-file ./.babelrc.node --delete-dir-on-start",
     "verdaccio": "node ../../scripts/verdaccio.js"
   },
   "dependencies": {
