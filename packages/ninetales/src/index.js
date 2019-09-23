@@ -8,6 +8,7 @@ function hydrateApp(View) {
 
 function ninetales(View) {
   // enable prefetching links
+  // TODO: write my own lib which also prefetches on tab focus
   require("instant.page");
 
   // hydrate app
