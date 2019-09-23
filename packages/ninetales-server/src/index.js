@@ -8,12 +8,6 @@ function prepare() {
   // TODO: check for existence of a build
   app.use("/.bundles", express.static("./dist/client"));
 
-  app.get("/.data/*", (req, res, next) => {
-    res.locals.minimal = true;
-    req.url = req.path.replace(/^\/\.data/, "");
-    next();
-  });
-
   return app;
 }
 
