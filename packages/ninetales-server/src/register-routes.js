@@ -20,7 +20,7 @@ function registerRoutes(app) {
       renderResponse(res, {
         View,
         bundles,
-        full: !res.locals.minimal,
+        minimal: res.locals.minimal,
         data: await getData(req),
       });
     });

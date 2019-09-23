@@ -19,7 +19,8 @@
     "@ninetales/build": "^0.1.0",
     "@ninetales/cli": "^0.1.0",
     "@ninetales/server": "^0.1.0",
-    "instant.page": "^2.0.0"
+    "instant.page": "^2.0.0",
+    "serialize-javascript": "^2.1.0"
   },
   "peerDependencies": {
     "preact": "^10.0.0-rc.3"
