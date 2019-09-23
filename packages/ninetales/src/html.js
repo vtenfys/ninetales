@@ -2,7 +2,7 @@ import { h } from "preact";
 import serialize from "serialize-javascript";
 
 // TODO: head/meta components (lang, title etc)
-function HTML({ app, appProps, styles, bundles }) {
+function HTML({ app, props, styles, bundles }) {
   return (
     <html>
       <head>
@@ -16,7 +16,7 @@ function HTML({ app, appProps, styles, bundles }) {
           id="props"
           type="application/json"
           dangerouslySetInnerHTML={{
-            __html: serialize(appProps, { isJSON: true }),
+            __html: serialize(props, { isJSON: true }),
           }}
         />
         {bundles.map(bundle => (

@@ -24,7 +24,7 @@ function renderResponse(res, { View, bundles, minimal, data }) {
 
   const htmlProps = {
     app,
-    appProps: data.props,
+    props: data.props,
     styles,
     bundles,
   };
