@@ -1053,6 +1053,11 @@ babel-plugin-module-resolver@^3.2.0:
     reselect "^3.0.1"
     resolve "^1.4.0"
 
+babel-plugin-remove-react-element@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/babel-plugin-remove-react-element/-/babel-plugin-remove-react-element-1.0.1.tgz#e9225a9c382d4fd443cf61da1c12acfe6a6ab72c"
+  integrity sha512-1RECaSNVLEqUJCLu6W9tM3G+WiIt6AXBaBIhS+e7BXSsmbY48puKOQVXFa+ptS/YezBmjE/icWwZHRpx1jXk3w==
+
 babel-plugin-root-import@^6.4.1:
   version "6.4.1"
   resolved "https://registry.yarnpkg.com/babel-plugin-root-import/-/babel-plugin-root-import-6.4.1.tgz#5c0dfe7588778b1933764c913fa3ed1c78150bf6"
