@@ -2720,6 +2720,11 @@ inquirer@^6.4.1:
     strip-ansi "^5.1.0"
     through "^2.3.6"
 
+instant.page@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/instant.page/-/instant.page-2.0.0.tgz#6da660e78be277d562f5cab508da49d756fc116a"
+  integrity sha512-yVwUAZ+pN7tBdcyW9jI7jx8lExdR/rpXGY5/SYdpGENowKQOLpORl7uuXgJv6E2vC8p9Vcuc1jkws354uNtFdQ==
+
 invariant@^2.2.2:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"

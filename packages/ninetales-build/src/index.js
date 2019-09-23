@@ -63,13 +63,15 @@ async function clientPrebuild(sourceDir, buildDirs, extensions) {
     const outFile = `${viewsDir}/${viewName}.entry.js`;
     const viewImport = `./${viewName}`;
 
-    const code = await renderFileAsync(
-      `${__dirname}/view-entry.ejs`,
-      { viewImport },
-      { escape: string => JSON.stringify(string) }
+    await outputFile(
+      outFile,
+      await renderFileAsync(
+        `${__dirname}/view-entry.ejs`,
+        { viewImport },
+        { escape: string => JSON.stringify(string) }
+      )
     );
 
-    await outputFile(outFile, code);
     entries.push([viewName, outFile]);
   }
 
@@ -120,17 +122,10 @@ async function createClientBundles(buildDirs, entries, extensions) {
 
   const stats = await webpackAsync(config);
 
-  if (stats.hasWarnings()) {
-    stats.warnings.forEach(warning => console.warn(warning));
-  }
-  if (stats.hasErrors()) {
-    stats.errors.forEach(error => console.error(error));
-    process.exit(1);
-  }
-
   console.log(stats.toString({ colors: true, excludeModules: true }));
-  const { entrypoints } = stats.toJson();
+  if (stats.hasErrors()) process.exit(1);
 
+  const { entrypoints } = stats.toJson();
   await outputFile(
     `${buildDirs.server}/entrypoints.json`,
     JSON.stringify(entrypoints)

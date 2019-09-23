@@ -1,31 +1,17 @@
-import { h, render, hydrate } from "preact";
-import navigate from "./navigate";
-import Link from "./link";
+import { h, hydrate } from "preact";
 
-function startRuntime() {
-  if (window._ninetalesRuntimeStarted) return;
-  window._ninetalesRuntimeStarted = true;
-
-  window.onpopstate = () => navigate(location.href, false);
-}
-
-function startApp(View) {
+function hydrateApp(View) {
   const app = document.getElementById("app");
   const props = JSON.parse(document.getElementById("props").innerHTML);
-
-  if (app.childElementCount === 0) {
-    render(<View {...props} />, app);
-  } else {
-    hydrate(<View {...props} />, app);
-  }
+  hydrate(<View {...props} />, app);
 }
 
-function main(View) {
-  // start persistent runtime
-  startRuntime();
+function ninetales(View) {
+  // enable prefetching links
+  require("instant.page");
 
-  // render/hydrate app
-  startApp(View);
+  // hydrate app
+  hydrateApp(View);
 }
 
-export { navigate, Link, main };
+export default ninetales;
