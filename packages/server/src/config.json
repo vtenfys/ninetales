@@ -1,10 +1,3 @@
 {
-  "port": 3000,
-  "minify": {
-    "collapseBooleanAttributes": true,
-    "collapseInlineTagWhitespace": true,
-    "collapseWhitespace": true,
-    "minifyCSS": true,
-    "minifyJS": true
-  }
+  "port": 3000
 }
