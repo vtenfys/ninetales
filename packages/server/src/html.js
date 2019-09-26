@@ -2,10 +2,10 @@ import { h } from "preact";
 import serialize from "serialize-javascript";
 
 // TODO: head/meta components (lang, title etc)
-function HTML({ app, props, styles, bundles }) {
+function HTML({ app, props, bundles }) {
   return (
     <html>
-      <head>{styles}</head>
+      <head>{/* TODO: styles */}</head>
       <body>
         <div id="app" dangerouslySetInnerHTML={{ __html: app }} />
         <script

@@ -92,12 +92,6 @@ async function createClientBundles(buildDirs, entries, extensions) {
       filename: "[chunkhash].bundle.js",
       path: resolve(buildDirs.client),
     },
-    resolve: {
-      // TODO: integrate with config
-      alias: {
-        react: "preact/compat",
-      },
-    },
     optimization: {
       usedExports: true,
       splitChunks: {
