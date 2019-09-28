@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@babel/plugin-transform-react-jsx": "^7.3.0",
-    "@babel/plugin-transform-runtime": "^7.6.0",
-    "@babel/preset-env": "^7.6.0",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
     "babel-plugin-module-resolver": "^3.2.0",
     "babel-plugin-remove-react-element": "^1.0.1",
     "babel-plugin-root-import": "^6.4.1",
