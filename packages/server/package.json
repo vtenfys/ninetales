@@ -15,7 +15,6 @@
   "dependencies": {
     "@babel/runtime": "^7.6.2",
     "express": "^4.17.1",
-    "html-minifier": "^4.0.0",
     "module-alias": "^2.2.1",
     "serialize-javascript": "^2.1.0",
     "styled-jsx": "^3.2.2"
