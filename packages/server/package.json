@@ -15,12 +15,12 @@
   "dependencies": {
     "@babel/runtime": "^7.6.2",
     "express": "^4.17.1",
-    "module-alias": "^2.2.1",
+    "module-alias": "^2.2.2",
     "serialize-javascript": "^2.1.0",
     "styled-jsx": "^3.2.2"
   },
   "devDependencies": {
-    "preact": "^10.0.0-rc.3",
+    "preact": "^10.0.0",
     "preact-render-to-string": "^5.0.6"
   },
   "peerDependencies": {
