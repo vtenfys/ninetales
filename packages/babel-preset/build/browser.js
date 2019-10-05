@@ -8,12 +8,6 @@ module.exports = () => ({
         "typeof window": "object",
       },
     ],
-    // TODO: create a custom plugin to do this (+ allow for dynamic styles?)
-    [
-      require("babel-plugin-remove-react-element"),
-      {
-        elementNames: ["_JSXStyle"],
-      },
-    ],
+    // TODO: create custom plugin to remove getStyles
   ],
 });
