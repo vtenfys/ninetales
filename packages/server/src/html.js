@@ -2,7 +2,7 @@ import { h } from "preact";
 import serialize from "serialize-javascript";
 
 // TODO: head/meta components (lang, title etc)
-function HTML({ app, props, bundles }) {
+function HTML({ app, props, assets }) {
   return (
     <html>
       <head>{/* TODO: styles */}</head>
@@ -15,8 +15,8 @@ function HTML({ app, props, bundles }) {
             __html: serialize(props, { isJSON: true }),
           }}
         />
-        {bundles.map(bundle => (
-          <script key={bundle} src={`/.bundles/${bundle}`} />
+        {assets.map(asset => (
+          <script key={asset} src={`/.assets/${asset}`} />
         ))}
       </body>
     </html>

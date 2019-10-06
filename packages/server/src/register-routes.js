@@ -15,11 +15,11 @@ function registerRoutes(app) {
       }
 
       const { default: View, getData } = require(component);
-      const { assets: bundles } = require(entrypoints)[view];
+      const { assets } = require(entrypoints)[view];
 
       renderResponse(res, {
         View,
-        bundles,
+        assets,
         data: await getData(req),
       });
     });

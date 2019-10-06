@@ -17,9 +17,11 @@
     "@babel/runtime": "^7.6.2",
     "@ninetales/babel-preset": "^0.1.0",
     "babel-loader": "^8.0.6",
+    "css-loader": "^3.2.0",
     "ejs": "^2.7.1",
     "es6-promisify": "^6.0.2",
     "fs-extra": "^8.1.0",
+    "mini-css-extract-plugin": "^0.8.0",
     "recursive-readdir": "^2.2.2",
     "webpack": "^4.41.0"
   },

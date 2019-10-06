@@ -1,11 +1,16 @@
+// compilation modules
 import { transformFileAsync } from "@babel/core";
-import { promisify } from "es6-promisify";
 import webpack from "webpack";
-import { renderFile } from "ejs";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
+// file handling modules
 import recursive from "recursive-readdir";
 import { remove, outputFile, copy } from "fs-extra";
 import { resolve } from "path";
+
+// misc modules
+import { promisify } from "es6-promisify";
+import { renderFile } from "ejs";
 
 const renderFileAsync = promisify(renderFile);
 const webpackAsync = promisify(webpack);
@@ -89,8 +94,9 @@ async function createClientBundles(buildDirs, entries, extensions) {
     mode: process.env.NODE_ENV || "production", // TODO: move to global config
     entry: webpackEntry,
     output: {
-      filename: "[chunkhash].bundle.js",
+      filename: "[chunkhash].js",
       path: resolve(buildDirs.client),
+      publicPath: "/.assets/",
     },
     optimization: {
       usedExports: true,
@@ -98,6 +104,11 @@ async function createClientBundles(buildDirs, entries, extensions) {
         chunks: "all",
       },
     },
+    plugins: [
+      new MiniCssExtractPlugin({
+        filename: "[contenthash].css",
+      }),
+    ],
     module: {
       rules: [
         {
@@ -109,6 +120,19 @@ async function createClientBundles(buildDirs, entries, extensions) {
               presets: ["@ninetales/babel-preset/build/browser"],
             },
           },
+        },
+        {
+          test: file => file.endsWith(".css"), // TODO: allow configuring this
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                // TODO: move to global config
+                hmr: process.env.NODE_ENV === "development",
+              },
+            },
+            "css-loader",
+          ],
         },
       ],
     },
