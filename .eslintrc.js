@@ -23,6 +23,7 @@ module.exports = {
     },
   },
   rules: {
-    "react/prop-types": 0,
+    "react/prop-types": "off",
+    "no-empty": ["error", { allowEmptyCatch: true }],
   },
 };

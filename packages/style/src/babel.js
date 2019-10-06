@@ -1,5 +1,5 @@
 // Packages
-import jsx from "babel-plugin-syntax-jsx";
+import jsx from "@babel/plugin-syntax-jsx";
 import hash from "string-hash";
 
 // Ours
