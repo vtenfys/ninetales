@@ -1,4 +1,4 @@
-const Stylis = require("stylis");
+import Stylis from "stylis";
 
 const stylis = new Stylis();
 
@@ -88,4 +88,4 @@ function transform(prefix, styles, settings = {}) {
   return stylis(prefix, styles);
 }
 
-module.exports = transform;
+export default transform;
