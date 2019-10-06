@@ -3,9 +3,18 @@ import serialize from "serialize-javascript";
 
 // TODO: head/meta components (lang, title etc)
 function HTML({ app, props, assets }) {
+  assets = assets.map(asset => `/.assets/${asset}`);
+
+  const scripts = assets.filter(asset => asset.endsWith(".js"));
+  const styles = assets.filter(asset => asset.endsWith(".css"));
+
   return (
     <html>
-      <head>{/* TODO: styles */}</head>
+      <head>
+        {styles.map(style => (
+          <link key={style} rel="stylesheet" href={style} />
+        ))}
+      </head>
       <body>
         <div id="app" dangerouslySetInnerHTML={{ __html: app }} />
         <script
@@ -15,8 +24,8 @@ function HTML({ app, props, assets }) {
             __html: serialize(props, { isJSON: true }),
           }}
         />
-        {assets.map(asset => (
-          <script key={asset} src={`/.assets/${asset}`} />
+        {scripts.map(script => (
+          <script key={script} src={script} />
         ))}
       </body>
     </html>
