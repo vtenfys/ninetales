@@ -1,6 +1,6 @@
 # Third-Party Licenses
 
-@ninetales/style includes code from the following third-party projects, whose licenses are included in this document.
+`@ninetales/style` includes code from the following third-party projects, whose licenses are included in this document.
 
 ## styled-jsx (version 1.0.11)
 
