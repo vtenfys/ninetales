@@ -125,6 +125,7 @@ async function createClientBundles(buildDirs, entries, extensions) {
           test: file => file.endsWith(".css"), // TODO: allow configuring this
           use: [
             {
+              // TODO: minify CSS
               loader: MiniCssExtractPlugin.loader,
               options: {
                 // TODO: move to global config

@@ -8,6 +8,5 @@ module.exports = () => ({
         "typeof window": "object",
       },
     ],
-    // TODO: create custom plugin to remove getStyles
   ],
 });
