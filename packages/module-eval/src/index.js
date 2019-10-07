@@ -4,15 +4,13 @@ import { tmpdir } from "os";
 import { transformSync } from "@babel/core";
 import uuidv4 from "uuid/v4";
 
-export default function evaluate({ code, base }) {
+export default function evaluate({ code, base, babelOptions = {} }) {
   const requirerPath = require.resolve("./requirer");
 
   const outputCode = [
     `const requirer = require(${JSON.stringify(requirerPath)}).default;`,
-    `require = requirer(${JSON.stringify(base)});`,
-    transformSync(code, {
-      presets: [`@ninetales/babel-preset/build/node`],
-    }).code,
+    `require = requirer(${JSON.stringify({ base, babelOptions })});`,
+    transformSync(code, babelOptions).code,
   ].join("\n");
 
   const outFile = `${tmpdir()}/module-eval/${uuidv4()}.js`;
@@ -32,5 +30,8 @@ console.log(
       "export default `hello ${myCenterConst}`",
     ].join("\n"),
     base: "/Users/david/Code/Ninetales/ninetales-project/src/views",
+    babelOptions: {
+      presets: [`@ninetales/babel-preset/build/node`],
+    },
   })
 );

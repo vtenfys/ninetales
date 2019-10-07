@@ -2,7 +2,7 @@ import { readFileSync } from "fs";
 import { dirname } from "path";
 import evaluate from "./index";
 
-function _require(id, base) {
+function _require(id, base, babelOptions) {
   const modulePath = require.resolve(id, { paths: [base] });
 
   if (
@@ -17,9 +17,10 @@ function _require(id, base) {
   return evaluate({
     code: readFileSync(modulePath, "utf8"),
     base: dirname(modulePath),
+    babelOptions,
   });
 }
 
-export default function requirer(base) {
-  return id => _require(id, base);
+export default function requirer({ base, babelOptions }) {
+  return id => _require(id, base, babelOptions);
 }
