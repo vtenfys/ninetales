@@ -13,8 +13,6 @@
     "verdaccio": "node ../../scripts/verdaccio.js"
   },
   "dependencies": {
-    "@babel/core": "^7.6.2",
-    "fs-extra": "^8.1.0",
-    "uuid": "^3.3.3"
+    "@babel/core": "^7.6.2"
   }
 }

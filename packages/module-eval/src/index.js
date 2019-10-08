@@ -1,37 +1,30 @@
-import { outputFileSync, unlinkSync } from "fs-extra";
-import { tmpdir } from "os";
+import { dirname } from "path";
+import Module from "module";
+import requirer from "./requirer";
 
 import { transformSync } from "@babel/core";
-import uuidv4 from "uuid/v4";
+import { runInNewContext } from "vm";
 
-export default function evaluate({ code, base, babelOptions = {} }) {
-  const requirerPath = require.resolve("./requirer");
+export default function evaluate({
+  code: rawCode,
+  filename,
+  parent = undefined,
+  babelOptions = {},
+}) {
+  const _module = new Module(filename, parent);
+  const _require = requirer({ _module, babelOptions });
 
-  const outputCode = [
-    `const requirer = require(${JSON.stringify(requirerPath)}).default;`,
-    `require = requirer(${JSON.stringify({ base, babelOptions })});`,
-    transformSync(code, babelOptions).code,
-  ].join("\n");
+  const sandbox = {
+    __dirname: dirname(filename),
+    __filename: filename,
+    exports: _module.exports,
+    module: _module,
+    require: _require,
+  };
 
-  const outFile = `${tmpdir()}/module-eval/${uuidv4()}.js`;
-  outputFileSync(outFile, outputCode);
+  const { code } = transformSync(rawCode, babelOptions);
 
-  const result = require(outFile);
-  unlinkSync(outFile);
-
-  return result;
+  // runInNewContext returns the last statement executed, so append
+  // module.exports to our code
+  return runInNewContext(code + "\nmodule.exports;", sandbox, { filename });
 }
-
-// e.g.
-console.log(
-  evaluate({
-    code: [
-      "import { myCenterConst } from './Page'",
-      "export default `hello ${myCenterConst}`",
-    ].join("\n"),
-    base: "/Users/david/Code/Ninetales/ninetales-project/src/views",
-    babelOptions: {
-      presets: [`@ninetales/babel-preset/build/node`],
-    },
-  })
-);
