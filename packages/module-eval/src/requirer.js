@@ -1,22 +1,13 @@
+import { _nodeModulePaths } from "module";
 import { readFileSync } from "fs";
 import { dirname } from "path";
 import evaluate from "./index";
 
 export default function requirer({ _module, babelOptions }) {
-  function _resolve(id, options) {
-    // don't specify the search paths if already defined
-    if (typeof options === "object" && options.paths !== undefined) {
-      return require.resolve(id, options);
-    }
-
-    return require.resolve(id, {
-      ...options,
-      paths: [dirname(_module.filename)],
-    });
-  }
-
   function _require(id) {
-    const modulePath = _resolve(id);
+    const modulePath = require.resolve(id, {
+      paths: _nodeModulePaths(dirname(_module.filename)),
+    });
 
     // use native require for built-in modules and ones from node_modules
     if (
@@ -35,10 +26,6 @@ export default function requirer({ _module, babelOptions }) {
       babelOptions,
     });
   }
-
-  _require.cache = require.cache;
-  _require.main = _module;
-  _require.resolve = _resolve;
 
   return _require;
 }

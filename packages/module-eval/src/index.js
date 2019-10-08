@@ -1,30 +1,24 @@
-import { dirname } from "path";
 import Module from "module";
+import { transformSync } from "@babel/core";
 import requirer from "./requirer";
 
-import { transformSync } from "@babel/core";
-import { runInNewContext } from "vm";
-
 export default function evaluate({
-  code: rawCode,
+  code,
   filename,
   parent = undefined,
   babelOptions = {},
 }) {
   const _module = new Module(filename, parent);
-  const _require = requirer({ _module, babelOptions });
+  _module.filename = filename;
+  _module.require = requirer({ _module, babelOptions });
 
-  const sandbox = {
-    __dirname: dirname(filename),
-    __filename: filename,
-    exports: _module.exports,
-    module: _module,
-    require: _require,
-  };
+  _module._compile(
+    transformSync(code, {
+      ...babelOptions,
+      filename,
+    }).code,
+    filename
+  );
 
-  const { code } = transformSync(rawCode, babelOptions);
-
-  // runInNewContext returns the last statement executed, so append
-  // module.exports to our code
-  return runInNewContext(code + "\nmodule.exports;", sandbox, { filename });
+  return _module.exports;
 }
