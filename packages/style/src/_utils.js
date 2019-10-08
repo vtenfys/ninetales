@@ -6,6 +6,9 @@ import { parse as parseCss } from "css-tree";
 import { SourceMapGenerator } from "source-map";
 import convert from "convert-source-map";
 
+import { readFileSync } from "fs";
+import evaluate from "@ninetales/module-eval";
+
 import {
   STYLE_ATTRIBUTE,
   GLOBAL_ATTRIBUTE,
@@ -112,7 +115,20 @@ export const makeStyledJsxCss = (transformedCss, isTemplateLiteral) => {
   return css;
 };
 
-export const makeStyledJsxTag = (id, transformedCss, isTemplateLiteral) => {
+// TODO: rename me
+export const makeStyledJsxTag = ({
+  id,
+  transformedCss,
+  isTemplateLiteral,
+  state,
+}) => {
+  const { filename } = state.file.opts;
+  const { babelOptions, env } = state.opts;
+
+  if (env === "server") {
+    return t.nullLiteral();
+  }
+
   let css;
 
   if (
@@ -124,6 +140,21 @@ export const makeStyledJsxTag = (id, transformedCss, isTemplateLiteral) => {
     css = makeStyledJsxCss(transformedCss, isTemplateLiteral);
   }
 
+  if (isTemplateLiteral) {
+    const code = [
+      readFileSync(filename, "utf8"),
+      `module.exports = \`${transformedCss}\`;`,
+    ].join("\n");
+
+    transformedCss = evaluate({ code, filename, babelOptions });
+  }
+
+  // TODO: output to adjacent or temporary file
+  // TODO: source maps?
+  console.log(filename);
+  console.log(transformedCss);
+
+  // TODO: output `{void require(<css file>)}` instead of tag
   return t.jSXElement(
     t.jSXOpeningElement(
       t.jSXIdentifier(STYLE_COMPONENT),

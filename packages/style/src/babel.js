@@ -284,15 +284,16 @@ export default function({ types: t }) {
             ] = state.externalStyles.shift();
 
             path.replaceWith(
-              makeStyledJsxTag(
+              makeStyledJsxTag({
                 id,
-                isGlobal
+                transformedCss: isGlobal
                   ? externalStylesReference
                   : t.memberExpression(
                       t.identifier(externalStylesReference.name),
                       t.identifier("__scoped")
-                    )
-              )
+                    ),
+                state,
+              })
             );
             return;
           }
@@ -333,7 +334,14 @@ export default function({ types: t }) {
             );
           }
 
-          path.replaceWith(makeStyledJsxTag(id, transformedCss, css.modified));
+          path.replaceWith(
+            makeStyledJsxTag({
+              id,
+              transformedCss,
+              isTemplateLiteral: css.modified,
+              state,
+            })
+          );
         },
       },
       Program: {
@@ -342,18 +350,6 @@ export default function({ types: t }) {
           state.ignoreClosing = null;
           state.file.hasJSXStyle = false;
           state.imports = [];
-        },
-        exit({ node, scope }, state) {
-          if (!(state.file.hasJSXStyle && !scope.hasBinding(STYLE_COMPONENT))) {
-            return;
-          }
-
-          const importDeclaration = t.importDeclaration(
-            [t.importDefaultSpecifier(t.identifier(STYLE_COMPONENT))],
-            t.stringLiteral("styled-jsx/style")
-          );
-
-          node.body.unshift(importDeclaration);
         },
       },
       // Transpile external StyleSheets
