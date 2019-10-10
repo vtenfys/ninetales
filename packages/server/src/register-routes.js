@@ -1,21 +1,29 @@
 import renderResponse from "./render-response";
-const entrypoints = `${process.cwd()}/dist/server/entrypoints.json`;
+
+// TODO: get build directory names from global config rather than hardcoding
+const buildDirs = {
+  client: `${process.cwd()}/dist/client`,
+  server: `${process.cwd()}/dist/server`,
+};
+
+const entrypoints = {
+  client: require(`${buildDirs.server}/entrypoints.client.json`),
+  server: require(`${buildDirs.server}/entrypoints.server.json`),
+};
+
+// TODO: support building while server running (i.e. delete module cache)
 
 function registerRoutes(app) {
-  // TODO: get "dist" directory name from global config rather than hardcoding
+  const routesEntry = entrypoints.server.routes.assets[0];
+  const routes = require(`${buildDirs.server}/${routesEntry}`).default;
 
-  const routes = require(`${process.cwd()}/dist/server/routes`).default;
   routes.forEach(({ path, view }) => {
     app.get(path, async (req, res) => {
-      const component = `${process.cwd()}/dist/server/views/${view}`;
-
-      if (process.env.NODE_ENV === "development") {
-        delete require.cache[require.resolve(component)];
-        delete require.cache[require.resolve(entrypoints)];
-      }
+      const serverEntry = entrypoints.server[view].assets[0];
+      const component = `${buildDirs.server}/${serverEntry}`;
 
       const { default: View, getData } = require(component);
-      const { assets } = require(entrypoints)[view];
+      const { assets } = entrypoints.client[view];
 
       renderResponse(res, {
         View,

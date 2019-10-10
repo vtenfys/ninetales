@@ -81,7 +81,7 @@ function createWebpackConfig(env, entries) {
 
 async function prepare() {
   // TODO: check for existence of a non-empty views folder + routes.js
-  // TODO: check for reserved filenames: *.entry.js
+  // TODO: check for reserved filenames: *.entry.js, views/routes
 
   await remove(config.outputDir);
 }
@@ -91,7 +91,9 @@ async function prebuild() {
   const viewsDir = `${buildDirs.prebuild}/views`;
   const entries = {
     client: {},
-    server: {},
+    server: {
+      routes: `./${buildDirs.prebuild}/routes.js`,
+    },
   };
 
   await copy(sourceDir, buildDirs.prebuild);
@@ -128,18 +130,19 @@ async function build(env, entries) {
   const webpackConfig = createWebpackConfig(env, entries);
 
   const stats = await webpackAsync(webpackConfig);
-  if (stats.hasErrors()) process.exit(1);
+  log(stats.toString({ colors: true, excludeModules: true }), "webpack");
+
+  if (stats.hasErrors()) {
+    process.exit(1);
+  }
 
   const { entrypoints } = stats.toJson();
   await outputFile(
-    `${buildDirs[env]}/entrypoints.json`,
+    `${buildDirs.server}/entrypoints.${env}.json`,
     JSON.stringify(entrypoints)
   );
 
   log(`Successfully created ${env} build!`);
-  if (config.development) {
-    log(stats.toString({ colors: true, excludeModules: true }), "webpack");
-  }
 }
 
 export default async function main() {
