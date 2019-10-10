@@ -9,13 +9,7 @@ import convert from "convert-source-map";
 import { readFileSync } from "fs";
 import evaluate from "@ninetales/module-eval";
 
-import {
-  STYLE_ATTRIBUTE,
-  GLOBAL_ATTRIBUTE,
-  STYLE_COMPONENT_ID,
-  STYLE_COMPONENT,
-  STYLE_COMPONENT_CSS,
-} from "./_constants";
+import { STYLE_ATTRIBUTE, GLOBAL_ATTRIBUTE } from "./_constants";
 
 export const isGlobalEl = el =>
   el.attributes.some(({ name }) => name && name.name === GLOBAL_ATTRIBUTE);
@@ -117,7 +111,7 @@ export const makeStyledJsxCss = (transformedCss, isTemplateLiteral) => {
 
 // TODO: rename me
 export const makeStyledJsxTag = ({
-  id,
+  // id,
   transformedCss,
   isTemplateLiteral,
   state,
@@ -127,17 +121,6 @@ export const makeStyledJsxTag = ({
 
   if (env === "server") {
     return t.nullLiteral();
-  }
-
-  let css;
-
-  if (
-    typeof transformedCss === "object" &&
-    (t.isIdentifier(transformedCss) || t.isMemberExpression(transformedCss))
-  ) {
-    css = transformedCss;
-  } else {
-    css = makeStyledJsxCss(transformedCss, isTemplateLiteral);
   }
 
   if (isTemplateLiteral) {
@@ -155,26 +138,33 @@ export const makeStyledJsxTag = ({
   console.log(transformedCss);
 
   // TODO: output `{void require(<css file>)}` instead of tag
-  return t.jSXElement(
-    t.jSXOpeningElement(
-      t.jSXIdentifier(STYLE_COMPONENT),
-      [
-        t.jSXAttribute(
-          t.jSXIdentifier(STYLE_COMPONENT_ID),
-          t.jSXExpressionContainer(
-            typeof id === "number" ? t.numericLiteral(id) : id
-          )
-        ),
-        t.jSXAttribute(
-          t.jSXIdentifier(STYLE_COMPONENT_CSS),
-          t.jSXExpressionContainer(css)
-        ),
-      ],
-      true
-    ),
-    null,
-    []
+  return t.unaryExpression(
+    "void",
+    t.callExpression(t.identifier("require"), [
+      t.stringLiteral(`data:text/css,${encodeURI(transformedCss)}`),
+    ])
   );
+
+  // return t.jSXElement(
+  //   t.jSXOpeningElement(
+  //     t.jSXIdentifier(STYLE_COMPONENT),
+  //     [
+  //       t.jSXAttribute(
+  //         t.jSXIdentifier(STYLE_COMPONENT_ID),
+  //         t.jSXExpressionContainer(
+  //           typeof id === "number" ? t.numericLiteral(id) : id
+  //         )
+  //       ),
+  //       t.jSXAttribute(
+  //         t.jSXIdentifier(STYLE_COMPONENT_CSS),
+  //         t.jSXExpressionContainer(css)
+  //       ),
+  //     ],
+  //     true
+  //   ),
+  //   null,
+  //   []
+  // );
 };
 
 // We only allow constants to be used in template literals.

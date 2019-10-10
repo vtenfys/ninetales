@@ -1,4 +1,4 @@
-export default function withNinetalesStyle(preset, { env }) {
+export default function withNinetalesStyle(preset, options) {
   const config = preset();
 
   const babelOptions = {
@@ -11,6 +11,9 @@ export default function withNinetalesStyle(preset, { env }) {
 
   return () => ({
     ...config,
-    plugins: [...config.plugins, [require("../babel"), { babelOptions, env }]],
+    plugins: [
+      ...config.plugins,
+      [require("../babel"), { babelOptions, ...options }],
+    ],
   });
 }
