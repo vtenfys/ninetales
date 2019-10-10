@@ -1,20 +1,16 @@
-module.exports = () => ({
+const withNinetalesStyle = require("@ninetales/style/preset-wrapper").default;
+
+const preset = () => ({
   presets: [require("../browser")],
   plugins: [
     require("babel-plugin-root-import"),
-    require("styled-jsx/babel"),
     [
       require("babel-plugin-transform-define"),
       {
         "typeof window": "object",
       },
     ],
-    // TODO: create a custom plugin to do this (+ allow for dynamic styles?)
-    [
-      require("babel-plugin-remove-react-element"),
-      {
-        elementNames: ["_JSXStyle"],
-      },
-    ],
   ],
 });
+
+module.exports = withNinetalesStyle(preset, { env: "browser" });

@@ -1,8 +1,9 @@
-module.exports = () => ({
+const withNinetalesStyle = require("@ninetales/style/preset-wrapper").default;
+
+const preset = () => ({
   presets: [require("../node")],
   plugins: [
     require("babel-plugin-root-import"),
-    require("styled-jsx/babel"),
     [
       require("babel-plugin-module-resolver"),
       {
@@ -11,3 +12,5 @@ module.exports = () => ({
     ],
   ],
 });
+
+module.exports = withNinetalesStyle(preset, { env: "server" });

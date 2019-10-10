@@ -6,7 +6,7 @@ function prepare() {
   const app = express();
 
   // TODO: check for existence of a build
-  app.use("/.bundles", express.static("./dist/client"));
+  app.use("/.assets", express.static("./dist/client"));
 
   return app;
 }

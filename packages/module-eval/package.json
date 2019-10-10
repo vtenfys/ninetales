@@ -1,5 +1,5 @@
 {
-  "name": "@ninetales/server",
+  "name": "@ninetales/module-eval",
   "version": "0.1.0",
   "main": "dist/index.js",
   "author": "David Bailey <davidbailey00@outlook.com>",
@@ -13,17 +13,6 @@
     "verdaccio": "node ../../scripts/verdaccio.js"
   },
   "dependencies": {
-    "@babel/runtime": "^7.6.2",
-    "express": "^4.17.1",
-    "serialize-javascript": "^2.1.0"
-  },
-  "devDependencies": {
-    "preact": "^10.0.0",
-    "preact-render-to-string": "^5.0.6"
-  },
-  "peerDependencies": {
-    "@ninetales/ninetales": "^0.1.0",
-    "preact": "^10.0.0-rc.2",
-    "preact-render-to-string": "^5.0.6"
+    "@babel/core": "^7.6.4"
   }
 }
