@@ -1,5 +1,6 @@
 import webpack from "webpack";
 import nodeExternals from "webpack-node-externals";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 import recursive from "recursive-readdir";
 import { remove, outputFile, copy } from "fs-extra";
@@ -51,17 +52,36 @@ function createWebpackConfig(env, entries) {
         chunks: "all",
       },
     },
+    plugins: [
+      new MiniCssExtractPlugin({
+        filename: "[contenthash].css",
+      }),
+    ],
     module: {
       rules: [
         {
+          test: file => file.endsWith(".css"),
+          use: [
+            {
+              loader: "css-loader",
+              options: {
+                onlyLocals: env === "server",
+              },
+            },
+          ],
+        },
+        {
           test: file => fileHasExtension(file, sourceExtensions),
           exclude: /node_modules/,
-          use: {
-            loader: "babel-loader",
-            options: {
-              presets: [`@ninetales/babel-preset/build/${preset}`],
+          use: [
+            {
+              loader: "babel-loader",
+              options: {
+                presets: [`@ninetales/babel-preset/build/${preset}`],
+              },
             },
-          },
+            "astroturf/loader",
+          ],
         },
       ],
     },
@@ -69,6 +89,12 @@ function createWebpackConfig(env, entries) {
 
   if (env === "client") {
     webpackConfig.output.publicPath = "/.assets/";
+    webpackConfig.module.rules[0].use.unshift({
+      loader: MiniCssExtractPlugin.loader,
+      options: {
+        hmr: development,
+      },
+    });
   }
 
   if (env === "server") {
