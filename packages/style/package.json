@@ -14,8 +14,8 @@
     "verdaccio": "node ../../scripts/verdaccio.js"
   },
   "dependencies": {
-    "@babel/core": "^7.6.3",
-    "@babel/parser": "^7.6.2",
+    "@babel/core": "^7.6.4",
+    "@babel/parser": "^7.6.4",
     "@babel/plugin-syntax-jsx": "^7.2.0",
     "@babel/preset-env": "^7.6.3",
     "@babel/traverse": "^7.6.2",
