@@ -6,7 +6,8 @@ import { parse as parseCss } from "css-tree";
 import { SourceMapGenerator } from "source-map";
 import convert from "convert-source-map";
 
-import { readFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
+import { basename } from "path";
 import evaluate from "@ninetales/module-eval";
 
 import { STYLE_ATTRIBUTE, GLOBAL_ATTRIBUTE } from "./_constants";
@@ -111,7 +112,7 @@ export const makeStyledJsxCss = (transformedCss, isTemplateLiteral) => {
 
 // TODO: rename me
 export const makeStyledJsxTag = ({
-  // id,
+  id,
   transformedCss,
   isTemplateLiteral,
   state,
@@ -132,39 +133,17 @@ export const makeStyledJsxTag = ({
     transformedCss = evaluate({ code, filename, babelOptions });
   }
 
-  // TODO: output to adjacent or temporary file
   // TODO: source maps?
-  console.log(filename);
-  console.log(transformedCss);
 
-  // TODO: output `{void require(<css file>)}` instead of tag
+  const outFile = filename.replace(/\.([^.]+)?$/, `.${id}.css`);
+  writeFileSync(outFile, transformedCss);
+
   return t.unaryExpression(
     "void",
     t.callExpression(t.identifier("require"), [
-      t.stringLiteral(`data:text/css,${encodeURI(transformedCss)}`),
+      t.stringLiteral(`./${basename(outFile)}`),
     ])
   );
-
-  // return t.jSXElement(
-  //   t.jSXOpeningElement(
-  //     t.jSXIdentifier(STYLE_COMPONENT),
-  //     [
-  //       t.jSXAttribute(
-  //         t.jSXIdentifier(STYLE_COMPONENT_ID),
-  //         t.jSXExpressionContainer(
-  //           typeof id === "number" ? t.numericLiteral(id) : id
-  //         )
-  //       ),
-  //       t.jSXAttribute(
-  //         t.jSXIdentifier(STYLE_COMPONENT_CSS),
-  //         t.jSXExpressionContainer(css)
-  //       ),
-  //     ],
-  //     true
-  //   ),
-  //   null,
-  //   []
-  // );
 };
 
 // We only allow constants to be used in template literals.

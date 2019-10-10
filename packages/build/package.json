@@ -16,7 +16,6 @@
     "@babel/core": "^7.6.4",
     "@babel/runtime": "^7.6.2",
     "@ninetales/babel-preset": "^0.1.0",
-    "astroturf": "^0.9.20",
     "babel-loader": "^8.0.6",
     "colors": "^1.4.0",
     "css-loader": "^3.2.0",

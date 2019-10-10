@@ -63,25 +63,23 @@ function createWebpackConfig(env, entries) {
           test: file => file.endsWith(".css"),
           use: [
             {
-              loader: "css-loader",
+              loader: MiniCssExtractPlugin.loader,
               options: {
-                onlyLocals: env === "server",
+                hmr: development,
               },
             },
+            "css-loader",
           ],
         },
         {
           test: file => fileHasExtension(file, sourceExtensions),
           exclude: /node_modules/,
-          use: [
-            {
-              loader: "babel-loader",
-              options: {
-                presets: [`@ninetales/babel-preset/build/${preset}`],
-              },
+          use: {
+            loader: "babel-loader",
+            options: {
+              presets: [`@ninetales/babel-preset/build/${preset}`],
             },
-            "astroturf/loader",
-          ],
+          },
         },
       ],
     },
@@ -89,12 +87,6 @@ function createWebpackConfig(env, entries) {
 
   if (env === "client") {
     webpackConfig.output.publicPath = "/.assets/";
-    webpackConfig.module.rules[0].use.unshift({
-      loader: MiniCssExtractPlugin.loader,
-      options: {
-        hmr: development,
-      },
-    });
   }
 
   if (env === "server") {
