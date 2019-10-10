@@ -1,16 +1,13 @@
-// compilation modules
-import { transformFileAsync } from "@babel/core";
 import webpack from "webpack";
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import nodeExternals from "webpack-node-externals";
 
-// file handling modules
 import recursive from "recursive-readdir";
 import { remove, outputFile, copy } from "fs-extra";
 import { resolve } from "path";
 
-// misc modules
 import { promisify } from "es6-promisify";
 import { renderFile } from "ejs";
+import { fileHasExtension, log } from "./utils";
 
 const renderFileAsync = promisify(renderFile);
 const webpackAsync = promisify(webpack);
@@ -20,83 +17,33 @@ process.on("unhandledRejection", err => {
   throw err;
 });
 
-async function prepare() {
-  // TODO: move these to a global user-modifiable config
-  const sourceDir = "src";
-  const outputDir = "dist";
-  const extensions = ["js", "jsx"];
+// TODO: allow user modification
+// TODO: output to file that the server can read
 
-  const buildDirs = {
-    prebuild: `${outputDir}/client-prebuild`,
-    server: `${outputDir}/server`,
-    client: `${outputDir}/client`,
-  };
+const config = {
+  sourceDir: "src",
+  outputDir: "dist",
+  sourceExtensions: ["js", "jsx"],
+  development: process.env.NODE_ENV === "development",
+};
 
-  // TODO: check for existence of a non-empty views folder + routes.js
-  // TODO: check for reserved filenames: entrypoints.json, *.entry.js
+config.buildDirs = {
+  prebuild: `${config.outputDir}/prebuild`,
+  server: `${config.outputDir}/server`,
+  client: `${config.outputDir}/client`,
+};
 
-  await remove(outputDir);
+function createWebpackConfig(env, entries) {
+  const { development, sourceExtensions, buildDirs } = config;
+  const preset = { client: "browser", server: "node" }[env];
 
-  return { sourceDir, buildDirs, extensions };
-}
-
-async function serverBuild(sourceDir, buildDirs, extensions) {
-  for (const file of await recursive(sourceDir)) {
-    const outFile = buildDirs.server + file.slice(sourceDir.length);
-
-    if (extensions.find(ext => file.endsWith(`.${ext}`))) {
-      const { code } = await transformFileAsync(file, {
-        presets: [`@ninetales/babel-preset/build/node`],
-      });
-
-      await outputFile(outFile, code);
-    } else {
-      await copy(file, outFile);
-    }
-  }
-}
-
-async function clientPrebuild(sourceDir, buildDirs, extensions) {
-  await copy(sourceDir, buildDirs.prebuild);
-
-  const viewsDir = `${buildDirs.prebuild}/views`;
-  const entries = [];
-  const ignore = file => !extensions.find(ext => file.endsWith(`.${ext}`));
-
-  for (const file of await recursive(viewsDir, [ignore])) {
-    const viewName = file.replace(/\.([^.]+)?$/, "").slice(viewsDir.length + 1);
-    const outFile = `${viewsDir}/${viewName}.entry.js`;
-    const viewImport = `./${viewName}`;
-
-    await outputFile(
-      outFile,
-      await renderFileAsync(
-        `${__dirname}/view-entry.ejs`,
-        { viewImport },
-        { escape: string => JSON.stringify(string) }
-      )
-    );
-
-    entries.push([viewName, outFile]);
-  }
-
-  return entries;
-}
-
-async function createClientBundles(buildDirs, entries, extensions) {
-  const webpackEntry = {};
-  entries.forEach(([view, entry]) => {
-    webpackEntry[view] = `./${entry}`;
-  });
-
-  // TODO: allow configuring Webpack build options
-  const config = {
-    mode: process.env.NODE_ENV || "production", // TODO: move to global config
-    entry: webpackEntry,
+  const webpackConfig = {
+    target: { client: "web", server: "node" }[env],
+    mode: development ? "development" : "production",
+    entry: entries[env],
     output: {
       filename: "[chunkhash].js",
-      path: resolve(buildDirs.client),
-      publicPath: "/.assets/",
+      path: resolve(env === "client" ? buildDirs.client : buildDirs.server),
     },
     optimization: {
       usedExports: true,
@@ -104,62 +51,103 @@ async function createClientBundles(buildDirs, entries, extensions) {
         chunks: "all",
       },
     },
-    plugins: [
-      new MiniCssExtractPlugin({
-        filename: "[contenthash].css",
-      }),
-    ],
     module: {
       rules: [
         {
-          test: file => extensions.find(ext => file.endsWith(`.${ext}`)),
+          test: file => fileHasExtension(file, sourceExtensions),
           exclude: /node_modules/,
           use: {
             loader: "babel-loader",
             options: {
-              presets: ["@ninetales/babel-preset/build/browser"],
+              presets: [`@ninetales/babel-preset/build/${preset}`],
             },
           },
-        },
-        {
-          test: file => file.endsWith(".css"), // TODO: allow configuring this
-          use: [
-            {
-              // TODO: minify CSS
-              loader: MiniCssExtractPlugin.loader,
-              options: {
-                // TODO: move to global config
-                hmr: process.env.NODE_ENV === "development",
-              },
-            },
-            "css-loader",
-          ],
         },
       ],
     },
   };
 
-  const stats = await webpackAsync(config);
+  if (env === "client") {
+    webpackConfig.output.publicPath = "/.assets/";
+  }
 
-  console.log(stats.toString({ colors: true, excludeModules: true }));
+  if (env === "server") {
+    webpackConfig.output.libraryTarget = "commonjs2";
+    webpackConfig.externals = [nodeExternals()];
+  }
+
+  return webpackConfig;
+}
+
+async function prepare() {
+  // TODO: check for existence of a non-empty views folder + routes.js
+  // TODO: check for reserved filenames: *.entry.js
+
+  await remove(config.outputDir);
+}
+
+async function prebuild() {
+  const { sourceDir, buildDirs, sourceExtensions } = config;
+  const viewsDir = `${buildDirs.prebuild}/views`;
+  const entries = {
+    client: {},
+    server: {},
+  };
+
+  await copy(sourceDir, buildDirs.prebuild);
+  const ignore = file => !fileHasExtension(file, sourceExtensions);
+
+  for (const file of await recursive(viewsDir, [ignore])) {
+    const relativeFile = file.slice(viewsDir.length + 1);
+    const viewName = relativeFile.replace(/\.([^.]+)?$/, "");
+    const viewImport = `./${viewName}`;
+
+    const serverFile = `${viewsDir}/${relativeFile}`;
+    const clientFile = `${viewsDir}/${viewName}.entry.js`;
+
+    await outputFile(
+      clientFile,
+      await renderFileAsync(
+        `${__dirname}/templates/view-entry.ejs`,
+        { viewImport },
+        { escape: string => JSON.stringify(string) }
+      )
+    );
+
+    entries.client[viewName] = `./${clientFile}`;
+    entries.server[viewName] = `./${serverFile}`;
+  }
+
+  return entries;
+}
+
+async function build(env, entries) {
+  log(`Creating ${env} build...`);
+
+  const { buildDirs } = config;
+  const webpackConfig = createWebpackConfig(env, entries);
+
+  const stats = await webpackAsync(webpackConfig);
   if (stats.hasErrors()) process.exit(1);
 
   const { entrypoints } = stats.toJson();
   await outputFile(
-    `${buildDirs.server}/entrypoints.json`,
+    `${buildDirs[env]}/entrypoints.json`,
     JSON.stringify(entrypoints)
   );
+
+  log(`Successfully created ${env} build!`);
+  if (config.development) {
+    log(stats.toString({ colors: true, excludeModules: true }), "webpack");
+  }
 }
 
 export default async function main() {
-  const { sourceDir, buildDirs, extensions } = await prepare();
+  await prepare();
 
-  // server build
-  await serverBuild(sourceDir, buildDirs, extensions);
+  // prebuild: copy sources and create client entries
+  const entries = await prebuild();
 
-  // client prebuild: copy sources and create view entries
-  const entries = await clientPrebuild(sourceDir, buildDirs, extensions);
-
-  // create client bundles with Webpack + Babel
-  await createClientBundles(buildDirs, entries, extensions);
+  // create client and server builds with Webpack
+  await Promise.all([build("client", entries), build("server", entries)]);
 }
