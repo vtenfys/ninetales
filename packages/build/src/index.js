@@ -1,5 +1,7 @@
 import webpack from "webpack";
 import nodeExternals from "webpack-node-externals";
+import TerserJSPlugin from "terser-webpack-plugin";
+import OptimizeCSSAssetsPlugin from "optimize-css-assets-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 import recursive from "recursive-readdir";
@@ -46,6 +48,7 @@ function createWebpackConfig(env, entries) {
       path: resolve(buildDirs[env]),
     },
     optimization: {
+      minimizer: [new TerserJSPlugin(), new OptimizeCSSAssetsPlugin()],
       usedExports: true,
       splitChunks: {
         chunks: "all",
@@ -67,12 +70,7 @@ function createWebpackConfig(env, entries) {
                 hmr: development,
               },
             },
-            {
-              loader: "css-loader",
-              options: {
-                minimize: !development,
-              },
-            },
+            "css-loader",
           ],
         },
         {
