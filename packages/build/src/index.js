@@ -39,12 +39,11 @@ function createWebpackConfig(env, entries) {
   const preset = { client: "browser", server: "node" }[env];
 
   const webpackConfig = {
-    target: { client: "web", server: "node" }[env],
     mode: development ? "development" : "production",
     entry: entries[env],
     output: {
       filename: "[chunkhash].js",
-      path: resolve(env === "client" ? buildDirs.client : buildDirs.server),
+      path: resolve(buildDirs[env]),
     },
     optimization: {
       usedExports: true,
@@ -68,7 +67,12 @@ function createWebpackConfig(env, entries) {
                 hmr: development,
               },
             },
-            "css-loader",
+            {
+              loader: "css-loader",
+              options: {
+                minimize: !development,
+              },
+            },
           ],
         },
         {
@@ -90,6 +94,7 @@ function createWebpackConfig(env, entries) {
   }
 
   if (env === "server") {
+    webpackConfig.target = "node";
     webpackConfig.output.libraryTarget = "commonjs2";
     webpackConfig.externals = [nodeExternals()];
   }
