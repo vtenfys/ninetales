@@ -3,7 +3,7 @@ import { readFileSync } from "fs";
 import { dirname } from "path";
 import evaluate from "./index";
 
-export default function requirer({ _module, babelOptions }) {
+export default function createRequire({ _module, babelOptions }) {
   function _require(id) {
     const modulePath = require.resolve(id, {
       paths: _nodeModulePaths(dirname(_module.filename)),
