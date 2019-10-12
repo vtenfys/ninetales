@@ -14,4 +14,5 @@ function ninetales(View) {
   hydrateApp(View);
 }
 
+export * from "./head";
 export default ninetales;
