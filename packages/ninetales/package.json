@@ -1,7 +1,8 @@
 {
   "name": "@ninetales/ninetales",
   "version": "0.1.0",
-  "main": "dist/browser/index.js",
+  "main": "dist/node/index.js",
+  "browser": "dist/browser/index.js",
   "author": "David Bailey <davidbailey00@outlook.com>",
   "license": "UNLICENSED",
   "files": [

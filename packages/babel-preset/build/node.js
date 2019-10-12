@@ -3,11 +3,11 @@ const withNinetalesStyle = require("@ninetales/style/preset-wrapper").default;
 const preset = () => ({
   presets: [require("../node")],
   plugins: [
-    require("babel-plugin-root-import"),
+    [require("babel-plugin-root-import"), { rootPathSuffix: "src" }],
     [
-      require("babel-plugin-module-resolver"),
+      require("babel-plugin-transform-define"),
       {
-        alias: { "@ninetales/ninetales": "@ninetales/ninetales/dist/node" },
+        "typeof window": "undefined",
       },
     ],
   ],
