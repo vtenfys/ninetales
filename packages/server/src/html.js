@@ -2,7 +2,7 @@ import { h } from "preact";
 import serialize from "serialize-javascript";
 
 // TODO: head/meta components (lang, title etc)
-function HTML({ app, props, assets }) {
+function HTML({ app, head, props, assets }) {
   assets = assets.map(asset => `/.assets/${asset}`);
 
   const scripts = assets.filter(asset => asset.endsWith(".js"));
@@ -11,6 +11,7 @@ function HTML({ app, props, assets }) {
   return (
     <html>
       <head>
+        {head}
         {styles.map(style => (
           <link key={style} rel="stylesheet" href={style} />
         ))}

@@ -1,0 +1,22 @@
+{
+  "name": "@ninetales/head",
+  "version": "0.1.0",
+  "main": "dist/node/index.js",
+  "browser": "dist/browser/index.js",
+  "author": "David Bailey <davidbailey00@outlook.com>",
+  "license": "UNLICENSED",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "concurrently 'yarn build:browser' 'yarn build:node'",
+    "build:node": "babel src/node -d dist/node --delete-dir-on-start",
+    "build:browser": "ENV=browser babel src/browser -d dist/browser --delete-dir-on-start",
+    "verdaccio": "node ../../scripts/verdaccio.js"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.6.2",
+    "preact": "^10.0.0"
+  }
+}

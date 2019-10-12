@@ -2,6 +2,7 @@ import HTML, { doctype } from "./html";
 
 import { h } from "preact";
 import render from "preact-render-to-string";
+import { flush } from "@ninetales/head";
 
 function renderResponse(res, { View, assets, data }) {
   if (data.status !== undefined) {
@@ -10,6 +11,7 @@ function renderResponse(res, { View, assets, data }) {
 
   const htmlProps = {
     app: render(<View {...data.props} />),
+    head: flush(),
     props: data.props,
     assets,
   };
