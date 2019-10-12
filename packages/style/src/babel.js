@@ -25,24 +25,6 @@ export default function({ types: t }) {
   return {
     inherits: jsx,
     visitor: {
-      ImportDefaultSpecifier(path, state) {
-        state.imports.push(path.get("local").node.name);
-      },
-      ImportSpecifier(path, state) {
-        state.imports.push(
-          (path.get("local") || path.get("imported")).node.name
-        );
-      },
-      VariableDeclarator(path, state) {
-        const subpath = path.get("init");
-        if (
-          !subpath.isCallExpression() ||
-          subpath.get("callee").node.name !== "require"
-        ) {
-          return;
-        }
-        state.imports.push(path.get("id").node.name);
-      },
       JSXOpeningElement(path, state) {
         const el = path.node;
         const { name } = el.name || {};
