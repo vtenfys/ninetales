@@ -4,6 +4,7 @@ import hash from "string-hash";
 
 // Ours
 import transform from "./lib/style-transform";
+
 import {
   isGlobalEl,
   isStyledJsx,
@@ -15,11 +16,10 @@ import {
   generateAttribute,
   makeSourceMapGenerator,
   addSourceMaps,
+  getPrefix,
 } from "./_utils";
 
 import { MARKUP_ATTRIBUTE, MARKUP_ATTRIBUTE_EXTERNAL } from "./_constants";
-
-const getPrefix = id => `[${MARKUP_ATTRIBUTE}="${id}"]`;
 
 export default function({ types: t }) {
   return {

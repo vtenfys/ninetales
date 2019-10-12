@@ -10,7 +10,11 @@ import { readFileSync, writeFileSync } from "fs";
 import { basename } from "path";
 import evaluate from "@ninetales/module-eval";
 
-import { STYLE_ATTRIBUTE, GLOBAL_ATTRIBUTE } from "./_constants";
+import {
+  STYLE_ATTRIBUTE,
+  GLOBAL_ATTRIBUTE,
+  MARKUP_ATTRIBUTE,
+} from "./_constants";
 
 export const isGlobalEl = el =>
   el.attributes.some(({ name }) => name && name.name === GLOBAL_ATTRIBUTE);
@@ -258,3 +262,5 @@ export const addSourceMaps = (code, generator, filename) =>
     convert.fromObject(generator).toComment({ multiline: true }),
     `/*@ sourceURL=${filename} */`,
   ].join("\n");
+
+export const getPrefix = id => `[${MARKUP_ATTRIBUTE}="${id}"]`;
