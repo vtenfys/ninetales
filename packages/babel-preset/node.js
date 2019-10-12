@@ -9,5 +9,11 @@ module.exports = () => ({
         pragmaFrag: "Fragment",
       },
     ],
+    [
+      require("babel-plugin-transform-define"),
+      {
+        "typeof window": "undefined",
+      },
+    ],
   ],
 });
