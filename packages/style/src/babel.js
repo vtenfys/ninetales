@@ -5,12 +5,6 @@ import hash from "string-hash";
 // Ours
 import transform from "./lib/style-transform";
 import {
-  exportDefaultDeclarationVisitor,
-  namedExportDeclarationVisitor,
-  moduleExportsVisitor,
-} from "./babel-external";
-
-import {
   isGlobalEl,
   isStyledJsx,
   findStyles,
@@ -23,23 +17,9 @@ import {
   addSourceMaps,
 } from "./_utils";
 
-import {
-  MARKUP_ATTRIBUTE,
-  STYLE_COMPONENT,
-  MARKUP_ATTRIBUTE_EXTERNAL,
-} from "./_constants";
+import { MARKUP_ATTRIBUTE, MARKUP_ATTRIBUTE_EXTERNAL } from "./_constants";
 
 const getPrefix = id => `[${MARKUP_ATTRIBUTE}="${id}"]`;
-const callExternalVisitor = (visitor, path, state) => {
-  const { file } = state;
-  const { opts } = file;
-  visitor(path, {
-    validate: true,
-    sourceMaps: opts.sourceMaps,
-    sourceFileName: opts.sourceFileName,
-    file,
-  });
-};
 
 export default function({ types: t }) {
   return {
@@ -83,7 +63,6 @@ export default function({ types: t }) {
         if (
           name &&
           name !== "style" &&
-          name !== STYLE_COMPONENT &&
           name.charAt(0) !== name.charAt(0).toUpperCase()
         ) {
           for (const { name } of el.attributes) {
@@ -351,16 +330,6 @@ export default function({ types: t }) {
           state.file.hasJSXStyle = false;
           state.imports = [];
         },
-      },
-      // Transpile external StyleSheets
-      ExportDefaultDeclaration(path, state) {
-        callExternalVisitor(exportDefaultDeclarationVisitor, path, state);
-      },
-      MemberExpression(path, state) {
-        callExternalVisitor(moduleExportsVisitor, path, state);
-      },
-      ExportNamedDeclaration(path, state) {
-        callExternalVisitor(namedExportDeclarationVisitor, path, state);
       },
     },
   };
