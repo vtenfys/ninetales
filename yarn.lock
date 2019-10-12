@@ -3065,10 +3065,10 @@ inquirer@^6.4.1:
     strip-ansi "^5.1.0"
     through "^2.3.6"
 
-instant.page@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/instant.page/-/instant.page-2.0.0.tgz#6da660e78be277d562f5cab508da49d756fc116a"
-  integrity sha512-yVwUAZ+pN7tBdcyW9jI7jx8lExdR/rpXGY5/SYdpGENowKQOLpORl7uuXgJv6E2vC8p9Vcuc1jkws354uNtFdQ==
+instant.page@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/instant.page/-/instant.page-2.0.1.tgz#cec1acb47c3115f38819045941599ecc2e4a7c4f"
+  integrity sha512-IPoLo8a6BS+QCyeh2aRdWt1x0FuvXz82NGb/qMorgbD+BternLoWtwzda04Rg1VMm9CsFYODEOd6mfVmYV9+xA==
 
 invariant@^2.2.2:
   version "2.2.4"
