@@ -19,6 +19,7 @@
     "@babel/runtime": "^7.6.2",
     "@ninetales/build": "^0.1.0",
     "@ninetales/cli": "^0.1.0",
+    "@ninetales/head": "^0.1.0",
     "@ninetales/server": "^0.1.0",
     "instant.page": "^2.0.1"
   },

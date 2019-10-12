@@ -6,13 +6,10 @@ function hydrateApp(View) {
   hydrate(<View {...props} />, app);
 }
 
-function ninetales(View) {
+export default function ninetales(View) {
   // enable prefetching links
   require("instant.page");
 
   // hydrate app
   hydrateApp(View);
 }
-
-export * from "./head";
-export default ninetales;
