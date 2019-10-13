@@ -11,7 +11,7 @@ let ssrHeadTagsPruned = false;
 export default function Head({ children }) {
   useEffect(() => {
     if (!ssrHeadTagsPruned) {
-      document.querySelectorAll("[data-ssr-head]").forEach(el => el.remove());
+      document.querySelectorAll("[data-n-head]").forEach(el => el.remove());
       ssrHeadTagsPruned = true;
     }
   }, []);

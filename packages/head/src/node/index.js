@@ -3,7 +3,7 @@ import { cloneElement } from "preact";
 const headTags = [];
 
 function setChildAttributes(child) {
-  return cloneElement(child, { "data-jsx": undefined, "data-ssr-head": "" });
+  return cloneElement(child, { "data-jsx": undefined, "data-n-head": "" });
 }
 
 export default function Head({ children }) {
