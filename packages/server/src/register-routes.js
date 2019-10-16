@@ -1,9 +1,9 @@
+import config from "@ninetales/config";
 import renderResponse from "./render-response";
 
-// TODO: get build directory names from global config rather than hardcoding
 const buildDirs = {
-  client: `${process.cwd()}/dist/client`,
-  server: `${process.cwd()}/dist/server`,
+  client: `${process.cwd()}/${config.buildDirs.client}`,
+  server: `${process.cwd()}/${config.buildDirs.server}`,
 };
 
 const entrypoints = {

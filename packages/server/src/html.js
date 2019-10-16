@@ -1,7 +1,7 @@
 import { h } from "preact";
 import serialize from "serialize-javascript";
 
-// TODO: head/meta components (lang, title etc)
+// TODO: HTML lang
 function HTML({ app, head, props, assets }) {
   assets = assets.map(asset => `/.assets/${asset}`);
 
