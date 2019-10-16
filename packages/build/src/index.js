@@ -8,6 +8,7 @@ import recursive from "recursive-readdir";
 import { remove, outputFile, copy } from "fs-extra";
 import { resolve } from "path";
 
+import config from "@ninetales/config";
 import { promisify } from "es6-promisify";
 import { renderFile } from "ejs";
 import { fileHasExtension, log } from "./utils";
@@ -19,23 +20,6 @@ const webpackAsync = promisify(webpack);
 process.on("unhandledRejection", err => {
   throw err;
 });
-
-// TODO: allow user modification
-// TODO: output to file that the server can read
-
-const config = {
-  sourceDir: "src",
-  outputDir: "dist",
-  staticDir: "static",
-  sourceExtensions: ["js", "jsx"],
-  development: process.env.NODE_ENV === "development",
-};
-
-config.buildDirs = {
-  prebuild: `${config.outputDir}/prebuild`,
-  server: `${config.outputDir}/server`,
-  client: `${config.outputDir}/client`,
-};
 
 function createWebpackConfig(env, entries) {
   const { development, sourceExtensions, buildDirs } = config;
@@ -96,6 +80,10 @@ function createWebpackConfig(env, entries) {
     webpackConfig.target = "node";
     webpackConfig.output.libraryTarget = "commonjs2";
     webpackConfig.externals = [nodeExternals()];
+  }
+
+  if (config.transformWebpackConfig !== undefined) {
+    config.transformWebpackConfig(webpackConfig);
   }
 
   return webpackConfig;

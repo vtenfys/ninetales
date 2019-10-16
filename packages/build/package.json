@@ -16,6 +16,7 @@
     "@babel/core": "^7.6.4",
     "@babel/runtime": "^7.6.2",
     "@ninetales/babel-preset": "^0.1.0",
+    "@ninetales/config": "^0.1.0",
     "babel-loader": "^8.0.6",
     "colors": "^1.4.0",
     "css-loader": "^3.2.0",

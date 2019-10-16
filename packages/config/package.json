@@ -1,0 +1,18 @@
+{
+  "name": "@ninetales/config",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "author": "David Bailey <davidbailey00@outlook.com>",
+  "license": "UNLICENSED",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "babel src -d dist --delete-dir-on-start --copy-files",
+    "verdaccio": "node ../../scripts/verdaccio.js"
+  },
+  "dependencies": {
+    "@babel/core": "^7.6.4"
+  }
+}

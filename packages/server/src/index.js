@@ -1,15 +1,14 @@
 import express from "express";
-import config from "./config.json"; // TODO: use global config
+import config from "@ninetales/config";
 import registerRoutes from "./register-routes";
 
 function prepare() {
   const app = express();
 
   // TODO: check for existence of a build
-  // TODO: get directory name from global config
 
-  app.use("/.assets", express.static("./dist/client"));
-  app.use("/", express.static("./static"));
+  app.use("/.assets", express.static(`./${config.buildDirs.client}`));
+  app.use("/", express.static(`./${config.staticDir}`));
 
   return app;
 }
