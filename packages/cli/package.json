@@ -15,6 +15,7 @@
     "verdaccio": "node ../../scripts/verdaccio.js"
   },
   "dependencies": {
+    "@babel/runtime": "^7.6.3",
     "yargs": "^14.0.0"
   },
   "comments": {

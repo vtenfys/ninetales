@@ -9,9 +9,9 @@ import { remove, outputFile, copy } from "fs-extra";
 import { resolve } from "path";
 
 import config from "@ninetales/config";
+import log from "@ninetales/logger";
 import { promisify } from "es6-promisify";
 import { renderFile } from "ejs";
-import { fileHasExtension, log } from "./utils";
 
 const renderFileAsync = promisify(renderFile);
 const webpackAsync = promisify(webpack);
@@ -22,7 +22,7 @@ process.on("unhandledRejection", err => {
 });
 
 function createWebpackConfig(env, entries) {
-  const { development, sourceExtensions, buildDirs } = config;
+  const { development, sourceFilePattern, buildDirs } = config;
   const preset = { client: "browser", server: "node" }[env];
 
   const webpackConfig = {
@@ -59,7 +59,7 @@ function createWebpackConfig(env, entries) {
           ],
         },
         {
-          test: file => fileHasExtension(file, sourceExtensions),
+          test: sourceFilePattern,
           exclude: /node_modules/,
           use: {
             loader: "babel-loader",
@@ -97,7 +97,7 @@ async function prepare() {
 }
 
 async function prebuild() {
-  const { sourceDir, buildDirs, sourceExtensions } = config;
+  const { sourceDir, buildDirs, sourceFilePattern } = config;
   const viewsDir = `${buildDirs.prebuild}/views`;
   const entries = {
     client: {},
@@ -107,7 +107,7 @@ async function prebuild() {
   };
 
   await copy(sourceDir, buildDirs.prebuild);
-  const ignore = file => !fileHasExtension(file, sourceExtensions);
+  const ignore = file => !file.match(sourceFilePattern);
 
   for (const file of await recursive(viewsDir, [ignore])) {
     const relativeFile = file.slice(viewsDir.length + 1);
@@ -136,21 +136,19 @@ async function prebuild() {
 async function build(env, entries) {
   log(`Creating ${env} build...`);
 
-  const { buildDirs } = config;
+  const { entryFiles } = config;
   const webpackConfig = createWebpackConfig(env, entries);
 
   const stats = await webpackAsync(webpackConfig);
-  log(stats.toString({ colors: true, excludeModules: true }), "webpack");
+  console.log(stats.toString({ colors: true, excludeModules: true }));
 
   if (stats.hasErrors()) {
+    log("Build failed", "err");
     process.exit(1);
   }
 
   const { entrypoints } = stats.toJson();
-  await outputFile(
-    `${buildDirs.server}/entrypoints.${env}.json`,
-    JSON.stringify(entrypoints)
-  );
+  await outputFile(entryFiles[env], JSON.stringify(entrypoints));
 
   log(`Successfully created ${env} build!`);
 }

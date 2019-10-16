@@ -1,5 +1,6 @@
 import express from "express";
 import config from "@ninetales/config";
+import log from "@ninetales/logger";
 import registerRoutes from "./register-routes";
 
 function prepare() {
@@ -18,6 +19,6 @@ export default function main() {
   registerRoutes(app);
 
   app.listen(config.port, () => {
-    console.log(`Listening on http://localhost:${config.port}`);
+    log(`Listening on http://localhost:${config.port}`);
   });
 }

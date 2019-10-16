@@ -16,7 +16,9 @@
     "verdaccio": "node ../../scripts/verdaccio.js"
   },
   "dependencies": {
-    "@babel/runtime": "^7.6.2",
+    "@babel/runtime": "^7.6.2"
+  },
+  "peerDependencies": {
     "preact": "^10.0.0"
   }
 }

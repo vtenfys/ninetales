@@ -4,21 +4,22 @@ const config = {
   sourceDir: "src",
   outputDir: "dist",
   staticDir: "static",
-  sourceExtensions: ["js", "jsx"],
+  sourceFilePattern: /\.jsx?$/,
   development: process.env.NODE_ENV === "development",
   transformWebpackConfig: undefined,
   port: 3000,
 };
 
-if (existsSync("ninetales.config.js")) {
-  const userConfig = require(`${process.cwd()}/ninetales.config`);
+const userConfigFile = "ninetales.config.js";
+if (existsSync(userConfigFile)) {
+  const userConfig = require(`${process.cwd()}/${userConfigFile}`);
 
   // only allow specific properties to be overridden
   for (const property of [
     "sourceDir",
     "outputDir",
     "staticDir",
-    "sourceExtensions",
+    "sourceFilePattern",
     "transformWebpackConfig",
     "port",
   ]) {
@@ -30,8 +31,13 @@ if (existsSync("ninetales.config.js")) {
 
 config.buildDirs = {
   prebuild: `${config.outputDir}/prebuild`,
-  server: `${config.outputDir}/server`,
   client: `${config.outputDir}/client`,
+  server: `${config.outputDir}/server`,
+};
+
+config.entryFiles = {
+  client: `${config.buildDirs.server}/entrypoints.client.json`,
+  server: `${config.buildDirs.server}/entrypoints.server.json`,
 };
 
 export default config;

@@ -1,5 +1,5 @@
 {
-  "name": "@ninetales/config",
+  "name": "@ninetales/logger",
   "version": "0.1.0",
   "main": "dist/index.js",
   "author": "David Bailey <davidbailey00@outlook.com>",
@@ -13,6 +13,7 @@
     "verdaccio": "node ../../scripts/verdaccio.js"
   },
   "dependencies": {
-    "@babel/runtime": "^7.6.3"
+    "@babel/runtime": "^7.6.3",
+    "colors": "^1.4.0"
   }
 }
