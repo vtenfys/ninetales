@@ -11,6 +11,7 @@ function renderResponse(res, { View, assets, data }) {
 
   const htmlProps = {
     app: render(<View {...data.props} />),
+    lang: data.lang,
     head: flush(),
     props: data.props,
     assets,

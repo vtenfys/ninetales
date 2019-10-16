@@ -2,14 +2,14 @@ import { h } from "preact";
 import serialize from "serialize-javascript";
 
 // TODO: HTML lang
-function HTML({ app, head, props, assets }) {
+function HTML({ app, lang, head, props, assets }) {
   assets = assets.map(asset => `/.assets/${asset}`);
 
   const scripts = assets.filter(asset => asset.endsWith(".js"));
   const styles = assets.filter(asset => asset.endsWith(".css"));
 
   return (
-    <html>
+    <html lang={lang}>
       <head>
         {head}
         {styles.map(style => (
