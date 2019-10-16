@@ -3,7 +3,7 @@ import colors from "colors/safe";
 const levels = {
   0: "info",
   1: "warn",
-  2: "err",
+  2: "err ",
 };
 
 colors.setTheme({
@@ -14,6 +14,6 @@ colors.setTheme({
 
 export default function log(message, level = 0) {
   const logger = colors.black.bgWhite(" ninetales ");
-  const status = colors[level](` ${levels[level].padEnd(4)} `);
+  const status = colors[level](` ${levels[level]} `);
   console.log(`${logger}${status} ${message}`);
 }
