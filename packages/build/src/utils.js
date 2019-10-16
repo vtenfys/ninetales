@@ -5,8 +5,8 @@ export function fileHasExtension(file, extensions) {
 }
 
 export function log(message, logger) {
-  const color = logger ? colors.magenta.bold : colors.yellow.bold;
-  logger = color(`[${logger || "ninetales"}]`.padEnd(12));
+  const color = logger ? colors.black.bgMagenta : colors.black.bgYellow;
+  logger = color(` ${logger ? logger[0] : "n"} `);
 
   message.split("\n").forEach(line => {
     console.log(`${logger} ${line}`);

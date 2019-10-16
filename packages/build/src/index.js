@@ -26,6 +26,7 @@ process.on("unhandledRejection", err => {
 const config = {
   sourceDir: "src",
   outputDir: "dist",
+  staticDir: "static",
   sourceExtensions: ["js", "jsx"],
   development: process.env.NODE_ENV === "development",
 };
@@ -167,11 +168,12 @@ async function build(env, entries) {
 }
 
 export default async function main() {
+  // check for expected files and remove existing output dir
   await prepare();
 
-  // prebuild: copy sources and create client entries
+  // copy sources and create client entries
   const entries = await prebuild();
 
   // create client and server builds with Webpack
-  await Promise.all([build("client", entries), build("server", entries)]);
+  await Promise.all(["client", "server"].map(env => build(env, entries)));
 }
