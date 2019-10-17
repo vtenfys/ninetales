@@ -143,14 +143,14 @@ async function build(env, entries) {
   console.log(stats.toString({ colors: true, excludeModules: true }));
 
   if (stats.hasErrors()) {
-    log("Build failed", "err");
+    log(`Failed to create ${env} build`, 2);
     process.exit(1);
   }
 
   const { entrypoints } = stats.toJson();
   await outputFile(entryFiles[env], JSON.stringify(entrypoints));
 
-  log(`Successfully created ${env} build!`);
+  log(`Successfully created ${env} build`);
 }
 
 export default async function main() {
