@@ -1,4 +1,3 @@
-import { _nodeModulePaths } from "module";
 import { readFileSync } from "fs";
 import { dirname } from "path";
 import evaluate from "./index";
@@ -6,7 +5,7 @@ import evaluate from "./index";
 export default function createRequire({ _module, babelOptions }) {
   function _require(id) {
     const modulePath = require.resolve(id, {
-      paths: _nodeModulePaths(dirname(_module.filename)),
+      paths: [dirname(_module.filename)],
     });
 
     // use native require for built-in modules and ones from node_modules
