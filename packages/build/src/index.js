@@ -27,6 +27,7 @@ function createWebpackConfig(env, entries) {
 
   const webpackConfig = {
     mode: development ? "development" : "production",
+    devtool: development ? "eval-source-map" : false,
     entry: entries[env],
     output: {
       filename: "[chunkhash].js",
