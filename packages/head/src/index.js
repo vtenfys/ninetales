@@ -1,25 +1,34 @@
 import { h, render, cloneElement } from "preact";
-import { useState } from "preact/hooks";
+import { useEffect } from "preact/hooks";
+import useID, { resetNextID } from "./use-id";
 
 const headTags = [];
-let nextID = 0;
+
+export function flush() {
+  resetNextID();
+  return headTags.splice(0, headTags.length);
+}
 
 function setChildAttributes(child, id) {
   return cloneElement(child, { "data-jsx": undefined, "data-n-head": id });
 }
 
 function HeadTag({ children: child }) {
-  const [id] = useState(nextID++);
+  const id = useID();
   child = setChildAttributes(child, id);
 
   if (typeof window === "undefined") {
     headTags.push(child);
   } else {
-    let replaceNode = document.querySelector(`[data-n-head="${id}"]`);
-    if (!replaceNode) {
-      replaceNode = document.createTextNode("");
-      document.head.appendChild(replaceNode);
-    }
+    const replaceNode =
+      document.querySelector(`[data-n-head="${id}"]`) ||
+      document.createElement(child.type);
+
+    useEffect(() => {
+      return () => {
+        replaceNode.remove();
+      };
+    }, []);
 
     render(child, document.head, replaceNode);
   }
@@ -27,23 +36,50 @@ function HeadTag({ children: child }) {
   return null;
 }
 
-export function Title(props) {
-  return (
-    <HeadTag>
-      <title {...props} />
-    </HeadTag>
-  );
-}
+export const Title = props => (
+  <HeadTag>
+    <title {...props} />
+  </HeadTag>
+);
 
-export function Meta(props) {
-  return (
-    <HeadTag>
-      <meta {...props} />
-    </HeadTag>
-  );
-}
+export const Base = props => (
+  <HeadTag>
+    <base {...props} />
+  </HeadTag>
+);
 
-export function flush() {
-  nextID = 0;
-  return headTags.splice(0, headTags.length);
-}
+export const Link = props => (
+  <HeadTag>
+    <link {...props} />
+  </HeadTag>
+);
+
+export const Style = ({ children: __html, ...props }) => (
+  <HeadTag>
+    <style {...props} dangerouslySetInnerHTML={{ __html }} />
+  </HeadTag>
+);
+
+export const Meta = props => (
+  <HeadTag>
+    <meta {...props} />
+  </HeadTag>
+);
+
+export const Script = ({ children: __html, ...props }) => (
+  <HeadTag>
+    <script {...props} dangerouslySetInnerHTML={{ __html }} />
+  </HeadTag>
+);
+
+export const NoScript = props => (
+  <HeadTag>
+    <noscript {...props} />
+  </HeadTag>
+);
+
+export const Template = props => (
+  <HeadTag>
+    <template {...props} />
+  </HeadTag>
+);
