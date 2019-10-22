@@ -1,8 +1,9 @@
 import { h } from "preact";
 import serialize from "serialize-javascript";
 
-// TODO: HTML lang
-function HTML({ app, lang, head, props, assets }) {
+export const doctype = "<!DOCTYPE html>";
+
+export default function HTML({ app, lang, head, props, assets }) {
   assets = assets.map(asset => `/.assets/${asset}`);
 
   const scripts = assets.filter(asset => asset.endsWith(".js"));
@@ -32,6 +33,3 @@ function HTML({ app, lang, head, props, assets }) {
     </html>
   );
 }
-
-export const doctype = "<!DOCTYPE html>";
-export default HTML;
