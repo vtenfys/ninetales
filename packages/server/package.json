@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "preact": "^10.0.1",
-    "preact-render-to-string": "^5.0.7"
+    "preact-render-to-string": "^5.1.0"
   },
   "peerDependencies": {
     "@ninetales/ninetales": "^0.1.0",
