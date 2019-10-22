@@ -56,7 +56,7 @@ export const Link = props => (
 
 export const Style = ({ children: __html, ...props }) => (
   <HeadTag>
-    <style {...props} dangerouslySetInnerHTML={{ __html }} />
+    <style dangerouslySetInnerHTML={{ __html }} {...props} />
   </HeadTag>
 );
 
@@ -68,7 +68,7 @@ export const Meta = props => (
 
 export const Script = ({ children: __html, ...props }) => (
   <HeadTag>
-    <script {...props} dangerouslySetInnerHTML={{ __html }} />
+    <script dangerouslySetInnerHTML={{ __html }} {...props} />
   </HeadTag>
 );
 
