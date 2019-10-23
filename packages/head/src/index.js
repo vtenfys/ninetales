@@ -1,11 +1,27 @@
 import { h, render, cloneElement } from "preact";
-import { useEffect } from "preact/hooks";
-import useID, { resetNextID } from "./use-id";
+import { useState, useEffect } from "preact/hooks";
 
 const headTags = [];
+let nextID = 0;
+
+function useID() {
+  const [shouldIncrementID, setShouldIncrementID] = useState(true);
+  const [id] = useState(nextID);
+
+  // prevent incrementing `id` on subsequent renders
+  useEffect(() => {
+    setShouldIncrementID(false);
+  }, []);
+
+  if (shouldIncrementID) {
+    nextID += 1;
+  }
+
+  return id;
+}
 
 export function flush() {
-  resetNextID();
+  nextID = 0;
   return headTags.splice(0, headTags.length);
 }
 
