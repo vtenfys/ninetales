@@ -15,7 +15,14 @@
     }
   },
   "lint-staged": {
-    "*.js": "eslint"
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{json,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "devDependencies": {
     "@babel/cli": "^7.6.4",
