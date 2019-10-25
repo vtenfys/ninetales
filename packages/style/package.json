@@ -23,7 +23,7 @@
     "@babel/types": "^7.6.1",
     "@ninetales/module-eval": "^0.1.0",
     "convert-source-map": "^1.6.0",
-    "css-tree": "^1.0.0-alpha.36",
+    "css-tree": "^1.0.0-alpha.37",
     "escape-string-regexp": "^2.0.0",
     "source-map": "^0.7.3",
     "string-hash": "^1.1.3",
