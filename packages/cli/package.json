@@ -19,6 +19,6 @@
     "yargs": "^14.0.0"
   },
   "comments": {
-    "@ninetales/ninetales": "for using in a project (watch/build/serve)"
+    "@ninetales/ninetales": "required for using in a project (watch/build/serve)"
   }
 }

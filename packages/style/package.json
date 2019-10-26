@@ -30,6 +30,6 @@
     "stylis": "^3.5.4"
   },
   "comments": {
-    "@babel/core": "peer dependency of @babel/preset-env"
+    "@babel/core": "peer dependency of @babel/preset-env - not used directly"
   }
 }
