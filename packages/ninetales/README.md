@@ -2,7 +2,11 @@
 
 # Ninetales
 
-Ninetales is a new way to create modern, server-based JavaScript websites and applications.
+Ninetales is two things:
+
+1. a new way to create modern JavaScript websites and applications
+
+2. an experimental project designed to push the bounds of what's possible with existing frameworks
 
 ## Developing Ninetales
 
