@@ -10,12 +10,20 @@ function renderResponse(res, { View, assets, data }) {
     res.status(data.status);
   }
 
-  // deep strip unused props:
+  // Preact spreads props when creating a VNode, which counts as an observation
+  // of all properties. So initially, create a VNode using the original props,
+  // then observe the spreaded props rather than the original ones, so that we
+  // can strip top-level props which are unused entirely.
+  const view = <View {...data.props} />;
+
   // only props accessed via observableProps make it to constructedProps
-  const [observableProps, constructedProps] = observe(data.props);
+  const [observableProps, constructedProps] = observe(view.props);
+
+  // assign observable props to the view, in order to track observations
+  view.props = observableProps;
 
   const htmlProps = {
-    app: render(<View {...observableProps} />),
+    app: render(view),
     lang: data.lang,
     head: flush(),
     props: constructedProps,
