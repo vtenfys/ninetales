@@ -1,7 +1,7 @@
 import { h } from "preact";
 import serialize from "serialize-javascript";
 
-export const doctype = "<!DOCTYPE html>";
+export const DOCTYPE = "<!DOCTYPE html>";
 
 export default function HTML({ app, lang, head, props, assets }) {
   assets = assets.map(asset => `/.assets/${asset}`);

@@ -1,4 +1,4 @@
-import HTML, { doctype } from "./html";
+import HTML, { DOCTYPE } from "./html";
 
 import { h } from "preact";
 import render from "preact-render-to-string";
@@ -30,7 +30,7 @@ function renderResponse(res, { View, assets, data }) {
     assets,
   };
 
-  const html = doctype + render(<HTML {...htmlProps} />);
+  const html = DOCTYPE + render(<HTML {...htmlProps} />);
   res.send(html);
 }
 
