@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "clean": "rimraf dist",
-    "build": "babel src -d dist --delete-dir-on-start --copy-files",
+    "build": "babel src -d dist --delete-dir-on-start",
     "verdaccio": "node ../../scripts/verdaccio.js"
   },
   "dependencies": {
