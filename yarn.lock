@@ -5203,10 +5203,10 @@ postcss@^7.0.0, postcss@^7.0.1, postcss@^7.0.14, postcss@^7.0.16, postcss@^7.0.1
     source-map "^0.6.1"
     supports-color "^6.1.0"
 
-preact-render-to-string@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/preact-render-to-string/-/preact-render-to-string-5.1.0.tgz#e810575aa1a0981836c48458d72c84976f9b1f7e"
-  integrity sha512-BrZeeppt4mLyI7fkO6P7pPBKVL9CjA/ckWMu3KlYOJilvqjAkvP2p9yF0YrEeMvsvpbWmJqpDbaEmkEoTtoJsA==
+preact-render-to-string@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/preact-render-to-string/-/preact-render-to-string-5.1.1.tgz#32f9eb16413a5c9fa6d9c43efe21d20697275101"
+  integrity sha512-/pmL9S7rgNnyfNPFIaf2eWJHf2Dc7kdbI5ALET2nq72KvHqjKh31M80XdEIFYUci/nq0p2QuVutnjq0Uv265bA==
   dependencies:
     pretty-format "^3.8.0"
 
