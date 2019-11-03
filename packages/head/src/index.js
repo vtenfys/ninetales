@@ -9,13 +9,9 @@ export function flush() {
   return headTags.splice(0, headTags.length);
 }
 
-function setChildAttributes(child, id) {
-  return cloneElement(child, { "data-jsx": undefined, "data-n-head": id });
-}
-
 function HeadTag({ children: child }) {
   const [id] = useState(() => nextID++);
-  child = setChildAttributes(child, id);
+  child = cloneElement(child, { "data-jsx": undefined, "data-n-head": id });
 
   if (typeof window === "undefined") {
     headTags.push(child);
