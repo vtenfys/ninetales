@@ -28,8 +28,5 @@
     "source-map": "^0.7.3",
     "string-hash": "^1.1.3",
     "stylis": "^3.5.4"
-  },
-  "comments": {
-    "@babel/core": "peer dependency of @babel/preset-env - not used directly"
   }
 }
