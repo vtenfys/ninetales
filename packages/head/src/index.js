@@ -11,7 +11,7 @@ export function flush() {
 
 function HeadTag({ children: child }) {
   const [id] = useState(() => nextID++);
-  child = cloneElement(child, { "data-jsx": undefined, "data-n-head": id });
+  child = cloneElement(child, { "data-n-head": id });
 
   if (typeof window === "undefined") {
     headTags.push(child);
