@@ -8,6 +8,7 @@ function Dehydrate({ children }) {
   const [id] = useState(() => nextID++);
 
   if (typeof window === "undefined") {
+    // require here to prevent being included in client bundles
     const render = require("preact-render-to-string");
     const { parseDOM } = require("htmlparser2");
 
@@ -39,6 +40,7 @@ function Dehydrate({ children }) {
   return nodes.map((node, index) =>
     // only render elements and text nodes (not comments)
     node instanceof HTMLElement ? (
+      // see https://github.com/facebook/react/issues/10923#issuecomment-338715787
       <node.localName key={index} dangerouslySetInnerHTML={{ __html: "" }} />
     ) : node instanceof Text ? (
       node.textContent
