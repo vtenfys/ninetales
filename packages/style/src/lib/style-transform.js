@@ -80,12 +80,10 @@ stylis.set({
  * @param {Object} settings
  * @return {string}
  */
-function transform(prefix, styles, settings = {}) {
+export default function transform(prefix, styles, settings = {}) {
   generator = settings.generator;
   offset = settings.offset;
   filename = settings.filename;
 
   return stylis(prefix, styles);
 }
-
-export default transform;

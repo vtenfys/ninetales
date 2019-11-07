@@ -10,7 +10,7 @@ const entrypoints = {
 
 // TODO: support building while server running (i.e. delete module cache)
 
-function registerRoutes(app) {
+export default function registerRoutes(app) {
   const routesEntry = entrypoints.server.routes.assets[0];
   const routes = require(`${serverDir}/${routesEntry}`).default;
 
@@ -30,5 +30,3 @@ function registerRoutes(app) {
     });
   });
 }
-
-export default registerRoutes;

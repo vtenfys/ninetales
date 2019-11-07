@@ -5,7 +5,7 @@ import render from "preact-render-to-string";
 import { flush } from "@ninetales/head";
 import observe from "@ninetales/entrapta";
 
-function renderResponse(res, { View, assets, data }) {
+export default function renderResponse(res, { View, assets, data }) {
   if (data.status !== undefined) {
     res.status(data.status);
   }
@@ -33,5 +33,3 @@ function renderResponse(res, { View, assets, data }) {
   const html = DOCTYPE + render(<HTML {...htmlProps} />);
   res.send(html);
 }
-
-export default renderResponse;
