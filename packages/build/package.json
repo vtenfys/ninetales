@@ -13,8 +13,8 @@
     "verdaccio": "node ../../scripts/verdaccio.js"
   },
   "dependencies": {
-    "@babel/core": "^7.6.4",
-    "@babel/runtime": "^7.6.2",
+    "@babel/core": "^7.7.2",
+    "@babel/runtime": "^7.7.2",
     "@ninetales/babel-preset": "^0.1.0",
     "@ninetales/config": "^0.1.0",
     "@ninetales/logger": "^0.1.0",

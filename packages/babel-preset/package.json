@@ -9,9 +9,9 @@
     "verdaccio": "node ../../scripts/verdaccio.js"
   },
   "dependencies": {
-    "@babel/plugin-transform-react-jsx": "^7.3.0",
+    "@babel/plugin-transform-react-jsx": "^7.7.0",
     "@babel/plugin-transform-runtime": "^7.6.2",
-    "@babel/preset-env": "^7.6.2",
+    "@babel/preset-env": "^7.7.1",
     "@ninetales/config": "^0.1.0",
     "@ninetales/style": "^0.1.0",
     "babel-plugin-root-import": "^6.4.1",

@@ -16,7 +16,7 @@
     "verdaccio": "node ../../scripts/verdaccio.js"
   },
   "dependencies": {
-    "@babel/runtime": "^7.6.2",
+    "@babel/runtime": "^7.7.2",
     "@ninetales/build": "^0.1.0",
     "@ninetales/cli": "^0.1.0",
     "@ninetales/head": "^0.1.0",
