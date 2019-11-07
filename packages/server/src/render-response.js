@@ -2,6 +2,8 @@ import HTML, { DOCTYPE } from "./html";
 
 import { h } from "preact";
 import render from "preact-render-to-string";
+
+import { resetNextID } from "@ninetales/dehydrate";
 import { flush } from "@ninetales/head";
 import observe from "@ninetales/entrapta";
 
@@ -30,6 +32,6 @@ export default function renderResponse(res, { View, assets, data }) {
     assets,
   };
 
-  const html = DOCTYPE + render(<HTML {...htmlProps} />);
-  res.send(html);
+  res.send(DOCTYPE + render(<HTML {...htmlProps} />));
+  resetNextID();
 }
