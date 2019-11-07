@@ -37,6 +37,7 @@ function Dehydrate({ children }) {
   }
 
   return nodes.map((node, index) =>
+    // only render elements and text nodes (not comments)
     node instanceof HTMLElement ? (
       <node.localName key={index} dangerouslySetInnerHTML={{ __html: "" }} />
     ) : node instanceof Text ? (
