@@ -42,26 +42,25 @@ export default memo(function Dehydrate({ children }) {
   );
 });
 
-export function addMarkers(html, rootID) {
+export function addMarkers(html) {
   // require here to prevent including in client bundles
   const { parseDOM, DomUtils } = require("htmlparser2");
-  const { findOne, find /* append, removeElement */ } = DomUtils;
+  const { find /* append, removeElement */ } = DomUtils;
 
   // reset ID ready for next page render
   nextID = 0;
 
   // const markers = [];
   const dom = parseDOM(html);
-  const appRoot = findOne(elem => elem.attribs.id === rootID, dom);
 
   find(
     elem => elem.type === "tag" && elem.name === "n-dehydrate",
-    appRoot,
+    dom,
     true, // recurse
     Infinity // limit
   ).forEach((/*wrapper*/) => {
     // Get the parent selector as an array of indices, similar to chained
-    // :nth-child() CSS selectors, relative to the `appRoot`.
+    // :nth-child() CSS selectors.
     //
     // Get the start index of dehydrated content relative to its parent, i.e.
     // position index of the wrapper, and the end index, i.e. start index +
@@ -78,4 +77,6 @@ export function addMarkers(html, rootID) {
     // Remove the surrounding wrapper element, and directly insert its children
     // into the parent.
   });
+
+  // Return modified HTML, alongside a JSON script containing markers.
 }

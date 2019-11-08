@@ -3,8 +3,8 @@ import HTML, { DOCTYPE } from "./html";
 import { h } from "preact";
 import render from "preact-render-to-string";
 
-import { resetNextID } from "@ninetales/dehydrate";
 import { flush } from "@ninetales/head";
+import { addMarkers } from "@ninetales/dehydrate";
 import observe from "@ninetales/entrapta";
 
 export default function renderResponse(res, { View, assets, data }) {
@@ -24,16 +24,17 @@ export default function renderResponse(res, { View, assets, data }) {
   // assign observable props to the view, in order to track observations
   view.props = observableProps;
 
+  // add dehydrate markers (so <Dehydrate /> can find which nodes to keep)
+  const [app, markers] = addMarkers(render(view));
+
   const htmlProps = {
-    app: render(view),
+    app,
     lang: data.lang,
     head: flush(),
     props: constructedProps,
+    markers,
     assets,
   };
-
-  // reset dehydrate ID to zero
-  resetNextID();
 
   const html = DOCTYPE + render(<HTML {...htmlProps} />);
   res.send(html);
