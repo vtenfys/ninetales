@@ -32,6 +32,9 @@ export default function renderResponse(res, { View, assets, data }) {
     assets,
   };
 
-  res.send(DOCTYPE + render(<HTML {...htmlProps} />));
+  // reset dehydrate ID to zero
   resetNextID();
+
+  const html = DOCTYPE + render(<HTML {...htmlProps} />);
+  res.send(html);
 }
