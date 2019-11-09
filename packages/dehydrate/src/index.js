@@ -50,5 +50,5 @@ export function addDehydrateMarkers(html) {
   // replace <n-dehydrate> wrapper elements with marker comments
   return html
     .replace(new RegExp(`<${ELEMENT_NAME}>`, "g"), `<!--${ELEMENT_NAME}-->`)
-    .replace(new RegExp(`<\\/${ELEMENT_NAME}>`), "<!--/-->");
+    .replace(new RegExp(`<\\/${ELEMENT_NAME}>`, "g"), "<!--/-->");
 }
