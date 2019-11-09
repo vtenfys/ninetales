@@ -6,7 +6,8 @@
   "author": "David Bailey <davidbailey00@outlook.com>",
   "license": "UNLICENSED",
   "files": [
-    "dist"
+    "dist",
+    "babel.js"
   ],
   "scripts": {
     "clean": "rimraf dist",

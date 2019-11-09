@@ -17,7 +17,7 @@ function findMarker() {
   return treeWalker.nextNode();
 }
 
-function Dehydrate({ children }) {
+export default memo(function Dehydrate({ children }) {
   if (typeof window === "undefined") {
     return <n-dehydrate>{children}</n-dehydrate>;
   }
@@ -46,9 +46,7 @@ function Dehydrate({ children }) {
       node.textContent
     ) : null
   );
-}
-
-export default memo(Dehydrate, () => true);
+});
 
 export function addDehydrateMarkers(html) {
   // replace <n-dehydrate> wrapper elements with marker comments
