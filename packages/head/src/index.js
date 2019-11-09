@@ -32,50 +32,26 @@ function HeadTag({ children: child }) {
   return null;
 }
 
-export const Title = props => (
-  <HeadTag>
-    <title {...props} />
-  </HeadTag>
-);
+function wrapTag(TagName, innerHTML = false) {
+  // Individual wrapped tag components get their display name
+  // when defined below, so we don't need to specify one here:
+  // eslint-disable-next-line react/display-name
+  return ({ children, ...props }) => (
+    <HeadTag>
+      {innerHTML ? (
+        <TagName dangerouslySetInnerHTML={{ __html: children }} {...props} />
+      ) : (
+        <TagName {...props}>{children}</TagName>
+      )}
+    </HeadTag>
+  );
+}
 
-export const Base = props => (
-  <HeadTag>
-    <base {...props} />
-  </HeadTag>
-);
-
-export const Link = props => (
-  <HeadTag>
-    <link {...props} />
-  </HeadTag>
-);
-
-export const Style = ({ children: __html, ...props }) => (
-  <HeadTag>
-    <style dangerouslySetInnerHTML={{ __html }} {...props} />
-  </HeadTag>
-);
-
-export const Meta = props => (
-  <HeadTag>
-    <meta {...props} />
-  </HeadTag>
-);
-
-export const Script = ({ children: __html, ...props }) => (
-  <HeadTag>
-    <script dangerouslySetInnerHTML={{ __html }} {...props} />
-  </HeadTag>
-);
-
-export const NoScript = props => (
-  <HeadTag>
-    <noscript {...props} />
-  </HeadTag>
-);
-
-export const Template = props => (
-  <HeadTag>
-    <template {...props} />
-  </HeadTag>
-);
+export const Title = wrapTag("title");
+export const Base = wrapTag("base");
+export const Link = wrapTag("link");
+export const Style = wrapTag("style", true);
+export const Meta = wrapTag("meta");
+export const Script = wrapTag("script", true);
+export const NoScript = wrapTag("noscript");
+export const Template = wrapTag("template");
