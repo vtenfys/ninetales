@@ -38,11 +38,8 @@ export default memo(function Dehydrate({ children }) {
 
   return nodes.map((node, index) =>
     node instanceof HTMLElement ? (
-      <node.localName
-        // TODO: get attributes & convert to React names where necessary
-        key={index}
-        dangerouslySetInnerHTML={{ __html: node.innerHTML }}
-      />
+      // see https://github.com/facebook/react/issues/10923#issuecomment-338715787
+      <node.localName key={index} dangerouslySetInnerHTML={{ __html: "" }} />
     ) : node instanceof Text ? (
       node.textContent
     ) : null
