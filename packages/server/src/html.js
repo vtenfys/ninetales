@@ -3,7 +3,7 @@ import serialize from "serialize-javascript";
 
 export const DOCTYPE = "<!DOCTYPE html>";
 
-export default function HTML({ app, lang, head, props, markers, assets }) {
+export default function HTML({ app, lang, head, props, assets }) {
   assets = assets.map(asset => `/.assets/${asset}`);
 
   const scripts = assets.filter(asset => asset.endsWith(".js"));
@@ -26,7 +26,6 @@ export default function HTML({ app, lang, head, props, markers, assets }) {
             __html: serialize(props, { isJSON: true }),
           }}
         />
-        {markers}
         {scripts.map(script => (
           <script key={script} src={script} />
         ))}

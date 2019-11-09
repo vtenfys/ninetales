@@ -1,38 +1,44 @@
 import { h } from "preact";
-import { useState } from "preact/hooks";
 import { memo } from "preact/compat";
 
-let nextID = 0;
-let markers = null;
+function findMarker() {
+  const treeWalker = document.createTreeWalker(
+    document.body,
+    NodeFilter.SHOW_COMMENT,
+    {
+      acceptNode(node) {
+        return node.textContent === "n-dehydrate"
+          ? NodeFilter.FILTER_ACCEPT
+          : NodeFilter.FILTER_REJECT;
+      },
+    }
+  );
 
-export default memo(function Dehydrate({ children }) {
-  const [id] = useState(() => nextID++);
+  return treeWalker.nextNode();
+}
 
+function Dehydrate({ children }) {
   if (typeof window === "undefined") {
-    return <n-dehyrate id={id}>{children}</n-dehyrate>;
+    return <n-dehydrate>{children}</n-dehydrate>;
   }
 
-  if (markers === null) {
-    markers = JSON.parse(document.getElementById("markers").innerHTML);
+  const marker = findMarker();
+  const nodes = [];
+
+  let currentNode = marker;
+  while (!(currentNode instanceof Comment && currentNode.textContent === "/")) {
+    currentNode = currentNode.nextSibling;
+    nodes.push(currentNode);
   }
 
-  const [selector, [startIndex, endIndex]] = markers[id];
-  let parentNode = document.getElementById("app");
-
-  // get the nth item of the current parent node, as
-  // specified by the selector, until reaching the end
-  while (selector.length > 0) {
-    parentNode = parentNode.childNodes[selector.shift()];
-  }
-
-  // get only nodes between the specified indices
-  const nodes = [...parentNode.childNodes].slice(startIndex, endIndex);
+  // remove start + finish marker comments
+  marker.remove();
+  currentNode.remove();
 
   return nodes.map((node, index) =>
-    // only render elements and text nodes (not comments)
     node instanceof HTMLElement ? (
       <node.localName
-        // get attributes & convert to React names where necessary
+        // TODO: get attributes & convert to React names where necessary
         key={index}
         dangerouslySetInnerHTML={{ __html: node.innerHTML }}
       />
@@ -40,43 +46,13 @@ export default memo(function Dehydrate({ children }) {
       node.textContent
     ) : null
   );
-});
+}
 
-export function addMarkers(html) {
-  // require here to prevent including in client bundles
-  const { parseDOM, DomUtils } = require("htmlparser2");
-  const { find /* append, removeElement */ } = DomUtils;
+export default memo(Dehydrate, () => true);
 
-  // reset ID ready for next page render
-  nextID = 0;
-
-  // const markers = [];
-  const dom = parseDOM(html);
-
-  find(
-    elem => elem.type === "tag" && elem.name === "n-dehydrate",
-    dom,
-    true, // recurse
-    Infinity // limit
-  ).forEach((/*wrapper*/) => {
-    // Get the parent selector as an array of indices, similar to chained
-    // :nth-child() CSS selectors.
-    //
-    // Get the start index of dehydrated content relative to its parent, i.e.
-    // position index of the wrapper, and the end index, i.e. start index +
-    // length of children - 1.
-    //
-    // Push the parent selector and start/end indices to `markers`. The index of
-    // these within the `markers` array should be the same as the dehydrate ID,
-    // due to sequential ordering.
-    //
-    // Check for surrounding text nodes on each side of the wrapper, and insert
-    // empty comments between any found, to keep as separate text nodes after
-    // the wrapper has been removed.
-    //
-    // Remove the surrounding wrapper element, and directly insert its children
-    // into the parent.
-  });
-
-  // Return modified HTML, alongside a JSON script containing markers.
+export function addDehydrateMarkers(html) {
+  // replace <n-dehydrate> wrapper elements with marker comments
+  return html
+    .replace(/<n-dehydrate>/g, "<!--n-dehydrate-->")
+    .replace(/<\/n-dehydrate>/g, "<!--/-->");
 }
