@@ -21,5 +21,8 @@
   },
   "peerDependencies": {
     "preact": "^10.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^1.19.1"
   }
 }
