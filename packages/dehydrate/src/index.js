@@ -1,5 +1,6 @@
 import { h } from "preact";
 import { memo } from "preact/compat";
+import { ELEMENT_NAME } from "./constants";
 
 function findMarker() {
   const treeWalker = document.createTreeWalker(
@@ -7,7 +8,7 @@ function findMarker() {
     NodeFilter.SHOW_COMMENT,
     {
       acceptNode(node) {
-        return node.textContent === "n-dehydrate"
+        return node.textContent === ELEMENT_NAME
           ? NodeFilter.FILTER_ACCEPT
           : NodeFilter.FILTER_REJECT;
       },
@@ -19,7 +20,7 @@ function findMarker() {
 
 export default memo(function Dehydrate({ children }) {
   if (typeof window === "undefined") {
-    return <n-dehydrate>{children}</n-dehydrate>;
+    return <ELEMENT_NAME>{children}</ELEMENT_NAME>;
   }
 
   const marker = findMarker();
@@ -51,6 +52,6 @@ export default memo(function Dehydrate({ children }) {
 export function addDehydrateMarkers(html) {
   // replace <n-dehydrate> wrapper elements with marker comments
   return html
-    .replace(/<n-dehydrate>/g, "<!--n-dehydrate-->")
-    .replace(/<\/n-dehydrate>/g, "<!--/-->");
+    .replace(new RegExp(`<${ELEMENT_NAME}>`, "g"), `<!--${ELEMENT_NAME}-->`)
+    .replace(new RegExp(`<\\/${ELEMENT_NAME}>`), "<!--/-->");
 }

@@ -1,8 +1,10 @@
+import { COMPONENT_NAME } from "./constants";
+
 export default ({ types: t }) => ({
   visitor: {
     JSXElement(path) {
       // skip if not a Dehydrate component
-      if (path.node.openingElement.name.name !== "Dehydrate") {
+      if (path.node.openingElement.name.name !== COMPONENT_NAME) {
         return;
       }
 
@@ -17,7 +19,7 @@ export default ({ types: t }) => ({
       path.replaceWith(
         t.jSXElement(
           t.jSXOpeningElement(
-            t.jSXIdentifier("Dehydrate"),
+            t.jSXIdentifier(COMPONENT_NAME),
             [], // attributes
             true // self-closing
           ),
