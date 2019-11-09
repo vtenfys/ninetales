@@ -1,1 +1,1 @@
-module.exports = require("./dist/babel");
+module.exports = require("./dist/node/babel");
