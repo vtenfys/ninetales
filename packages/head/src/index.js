@@ -1,24 +1,26 @@
 import { h, render, cloneElement } from "preact";
 import { useState, useEffect } from "preact/hooks";
 
+const HEAD_ATTRIBUTE = "data-n-head";
 const headTags = [];
-let nextID = 0;
 
 export function flush() {
-  nextID = 0;
   return headTags.splice(0, headTags.length);
 }
 
 function HeadTag({ children: child }) {
-  const [id] = useState(() => nextID++);
-  child = cloneElement(child, { "data-n-head": id });
-
   if (typeof window === "undefined") {
-    headTags.push(child);
+    headTags.push(cloneElement(child, { [HEAD_ATTRIBUTE]: "" }));
   } else {
-    const replaceNode =
-      document.querySelector(`[data-n-head="${id}"]`) ||
-      document.createElement(child.type);
+    const [replaceNode] = useState(
+      () =>
+        document.querySelector(`[${HEAD_ATTRIBUTE}]`) ||
+        document.createElement(child.type)
+    );
+
+    if (replaceNode.hasAttribute(HEAD_ATTRIBUTE)) {
+      replaceNode.removeAttribute(HEAD_ATTRIBUTE);
+    }
 
     useEffect(() => {
       return () => {
