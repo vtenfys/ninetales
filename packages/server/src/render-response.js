@@ -2,7 +2,9 @@ import HTML, { DOCTYPE } from "./html";
 
 import { h } from "preact";
 import render from "preact-render-to-string";
+
 import { flush } from "@ninetales/head";
+import { addDehydrateMarkers } from "@ninetales/dehydrate";
 import observe from "@ninetales/entrapta";
 
 export default function renderResponse(res, { View, assets, data }) {
@@ -23,7 +25,7 @@ export default function renderResponse(res, { View, assets, data }) {
   view.props = observableProps;
 
   const htmlProps = {
-    app: render(view),
+    app: addDehydrateMarkers(render(view)),
     lang: data.lang,
     head: flush(),
     props: constructedProps,

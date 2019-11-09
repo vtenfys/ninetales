@@ -13,3 +13,5 @@ export default function ninetales(View) {
   // hydrate app
   hydrateApp(View);
 }
+
+export { default as Dehydrate } from "@ninetales/dehydrate";
