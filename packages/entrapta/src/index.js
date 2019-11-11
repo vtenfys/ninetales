@@ -1,7 +1,20 @@
+let observationPaused = false;
+
+// useful in conjunction with @ninetales/dehydrate
+export function pauseObservation() {
+  observationPaused = true;
+  return () => {
+    observationPaused = false;
+  };
+}
+
 function createHandler(mutable, constructed) {
   return {
     get(target, prop) {
-      if (!Object.prototype.hasOwnProperty.call(constructed, prop)) {
+      if (
+        !Object.prototype.hasOwnProperty.call(constructed, prop) &&
+        !observationPaused
+      ) {
         const value = Reflect.get(...arguments);
 
         if (typeof value === "object") {

@@ -8,9 +8,23 @@ export function flush() {
   return headTags.splice(0, headTags.length);
 }
 
+let dynamicGenerationPaused = false;
+
+// useful in conjunction with @ninetales/dehydrate
+export function pauseDynamicGeneration() {
+  dynamicGenerationPaused = true;
+  return () => {
+    dynamicGenerationPaused = false;
+  };
+}
+
 function HeadTag({ children: child }) {
   if (typeof window === "undefined") {
-    headTags.push(cloneElement(child, { [HEAD_ATTRIBUTE]: "" }));
+    if (!dynamicGenerationPaused) {
+      child = cloneElement(child, { [HEAD_ATTRIBUTE]: "" });
+    }
+
+    headTags.push(child);
   } else {
     const [replaceNode] = useState(
       () =>
@@ -49,6 +63,7 @@ function wrapTag(TagName, innerHTML = false) {
   );
 }
 
+// from https://developer.mozilla.org/en-US/docs/Web/HTML/Element/head#See_also
 export const Title = wrapTag("title");
 export const Base = wrapTag("base");
 export const Link = wrapTag("link");
