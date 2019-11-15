@@ -5,6 +5,7 @@
   "browser": "dist/browser/index.js",
   "author": "David Bailey <davidbailey00@outlook.com>",
   "license": "UNLICENSED",
+  "sideEffects": false,
   "files": [
     "dist"
   ],
