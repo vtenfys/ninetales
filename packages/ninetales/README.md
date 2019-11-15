@@ -6,7 +6,7 @@ Ninetales is two things:
 
 1. a new way to create modern JavaScript websites and applications
 
-2. an experimental project designed to push the bounds of what's possible with existing frameworks
+2. an experimental project designed to raise the performance bar for similar frameworks
 
 ## Developing Ninetales
 
