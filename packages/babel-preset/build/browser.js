@@ -8,7 +8,7 @@ const preset = () => ({
       require("babel-plugin-root-import"),
       { rootPathSuffix: config.buildDirs.prebuild },
     ],
-    require("@ninetales/dehydrate/babel"),
+    require("@ninetales/dehydrate/babel/browser"),
   ],
 });
 

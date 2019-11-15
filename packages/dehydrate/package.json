@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "files": [
     "dist",
-    "babel.js"
+    "babel"
   ],
   "scripts": {
     "clean": "rimraf dist",

@@ -1,4 +1,4 @@
-import { COMPONENT_NAME } from "./constants";
+import { COMPONENT_NAME } from "../constants";
 
 export default ({ types: t }) => ({
   visitor: {
