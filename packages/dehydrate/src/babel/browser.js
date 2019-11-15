@@ -17,9 +17,9 @@ export default ({ types: t }) => ({
       }
 
       path.replaceWith(
-        t.jSXElement(
-          t.jSXOpeningElement(
-            t.jSXIdentifier(COMPONENT_NAME),
+        t.jsxElement(
+          t.jsxOpeningElement(
+            t.jsxIdentifier(COMPONENT_NAME),
             [], // attributes
             true // self-closing
           ),
