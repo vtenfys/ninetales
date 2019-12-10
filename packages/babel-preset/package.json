@@ -12,6 +12,7 @@
     "@babel/plugin-transform-react-jsx": "^7.7.0",
     "@babel/plugin-transform-runtime": "^7.6.2",
     "@babel/preset-env": "^7.7.1",
+    "@babel/preset-modules": "^0.1.0",
     "@ninetales/config": "^0.1.0",
     "@ninetales/dehydrate": "^0.1.0",
     "@ninetales/style": "^0.1.0",
