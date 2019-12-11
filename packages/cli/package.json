@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.7.2",
-    "yargs": "^14.0.0"
+    "yargs": "^15.0.2"
   },
   "optionalPeerDependencies": {
     "@ninetales/ninetales": "^0.1.0"
