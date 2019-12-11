@@ -1,0 +1,18 @@
+{
+  "name": "ninetales-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "NODE_ENV=production ninetales build",
+    "serve": "NODE_ENV=production ninetales serve"
+  },
+  "dependencies": {
+    "@ninetales/ninetales": "^0.1.0-dev.1570827448340",
+    "preact": "^10.0.0",
+    "preact-render-to-string": "^5.0.6"
+  },
+  "devDependencies": {
+    "webpack-bundle-analyzer": "^3.6.0"
+  }
+}
