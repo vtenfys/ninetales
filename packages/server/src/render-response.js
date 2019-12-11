@@ -3,9 +3,22 @@ import HTML, { DOCTYPE } from "./html";
 import { h } from "preact";
 import render from "preact-render-to-string";
 
-import { flush } from "@ninetales/head";
-import { addDehydrateMarkers } from "@ninetales/dehydrate";
+import { flush, pauseDynamicGeneration } from "@ninetales/head";
+import { addDehydrateMarkers, coordinator } from "@ninetales/dehydrate";
 import observe from "@ninetales/entrapta";
+
+let renderingDehydrate = false;
+let unpauseDynamicGeneration;
+
+coordinator.on("open", () => {
+  renderingDehydrate = true;
+  unpauseDynamicGeneration = pauseDynamicGeneration();
+});
+
+coordinator.on("close", () => {
+  renderingDehydrate = false;
+  unpauseDynamicGeneration();
+});
 
 export default function renderResponse(res, { View, assets, data }) {
   if (data.status !== undefined) {
@@ -19,7 +32,9 @@ export default function renderResponse(res, { View, assets, data }) {
   const view = <View {...data.props} />;
 
   // only props accessed via observableProps make it to constructedProps
-  const [observableProps, constructedProps] = observe(view.props);
+  const [observableProps, constructedProps] = observe(view.props, {
+    shouldObserve: () => !renderingDehydrate,
+  });
 
   // assign observable props to the view, in order to track observations
   view.props = observableProps;

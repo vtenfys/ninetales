@@ -26,6 +26,7 @@ export default ({ types: t }) => ({
         t.arrowFunctionExpression(
           [], // params
 
+          // TODO: remove empty / whitespace-only JSXText nodes
           // convert JSXText to a string literal, replacing repeated whitespace
           // with a single space and removing leading/trailing whitespace
           child.type === "JSXText"

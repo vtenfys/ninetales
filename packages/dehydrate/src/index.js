@@ -1,7 +1,8 @@
 import { h } from "preact";
 import { memo } from "preact/compat";
 
-import * as coordinator from "./coordinator";
+import { open, close } from "./coordinator";
+export { default as coordinator } from "./coordinator";
 import { ELEMENT_NAME } from "./constants";
 
 function findMarker() {
@@ -46,17 +47,17 @@ const Dehydrate = memo(function Dehydrate() {
 
 if (typeof window === "undefined") {
   Dehydrate.Server = function ServerDehydrate({ children }) {
-    // send an event which can be listened e.g. by entrapta to pause watching for
-    // property access for dehydrated content, by n-head to pause adding special
-    // data attributes for rehydration, etc
-    coordinator.open();
+    // send an event which can be listened e.g. by entrapta to pause watching
+    // for property access for dehydrated content, by n-head to pause adding
+    // special data attributes for rehydration, etc
+    open();
 
     children = Array.isArray(children)
       ? children.map(child => child())
       : children();
 
     // tell event listeners to unpause
-    coordinator.close();
+    close();
     return <ELEMENT_NAME>{children}</ELEMENT_NAME>;
   };
 }
